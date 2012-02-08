@@ -43,6 +43,7 @@
             this.lsStop = new System.Windows.Forms.Button();
             this.lsStart = new System.Windows.Forms.Button();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.textBox1 = new System.Windows.Forms.TextBox();
             this.dbDatabase = new System.Windows.Forms.TextBox();
             this.label7 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
@@ -57,7 +58,6 @@
             this.linkLabel1 = new System.Windows.Forms.LinkLabel();
             this.label2 = new System.Windows.Forms.Label();
             this.dbBrowse = new System.Windows.Forms.FolderBrowserDialog();
-            this.textBox1 = new System.Windows.Forms.TextBox();
             this.groupBox1.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.groupBox4.SuspendLayout();
@@ -238,6 +238,20 @@
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "3. Launch Client";
             // 
+            // textBox1
+            // 
+            this.textBox1.BackColor = System.Drawing.SystemColors.Control;
+            this.textBox1.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.textBox1.Location = new System.Drawing.Point(6, 113);
+            this.textBox1.Multiline = true;
+            this.textBox1.Name = "textBox1";
+            this.textBox1.ReadOnly = true;
+            this.textBox1.Size = new System.Drawing.Size(481, 32);
+            this.textBox1.TabIndex = 11;
+            this.textBox1.Text = "If the client disappears after launch, try wiping the database a few times by cli" +
+    "cking the \"Wipe Database\" button.";
+            this.textBox1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
             // dbDatabase
             // 
             this.dbDatabase.Location = new System.Drawing.Point(366, 58);
@@ -376,20 +390,6 @@
             // dbBrowse
             // 
             this.dbBrowse.RootFolder = System.Environment.SpecialFolder.MyComputer;
-            // 
-            // textBox1
-            // 
-            this.textBox1.BackColor = System.Drawing.SystemColors.Control;
-            this.textBox1.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.textBox1.Location = new System.Drawing.Point(6, 113);
-            this.textBox1.Multiline = true;
-            this.textBox1.Name = "textBox1";
-            this.textBox1.ReadOnly = true;
-            this.textBox1.Size = new System.Drawing.Size(481, 32);
-            this.textBox1.TabIndex = 11;
-            this.textBox1.Text = "If the client disappears after launch, try wiping the database a few times by cli" +
-    "cking the \"Wipe Database\" button.";
-            this.textBox1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // Form1
             // 
