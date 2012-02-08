@@ -1,0 +1,9 @@
+Portable Postgres
+============================================================================
+License:		Creative Commons Attribution-ShareAlike 3.0 unported
+Author(s):		limpygnome			limpygnome@gmail.com
+Version:		1.0.0
+
+Allows you to create a portable Postgres database server, with the ability
+to download the server-files and have your database setup with an initial
+database (Postgres) and user-role (User - no password).
