@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("Portable-Postgres")]
-[assembly: AssemblyCopyright("Copyright ©  2012")]
+[assembly: AssemblyCopyright("UberMeat - Creative Commons Attribution-ShareAlike 3.0 unported")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

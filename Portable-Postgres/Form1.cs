@@ -24,6 +24,7 @@ using Ionic.Zip;
 using System.Diagnostics;
 using System.Net.Sockets;
 using System.Threading;
+using System.Xml;
 
 namespace Portable_Postgres
 {
@@ -31,7 +32,7 @@ namespace Portable_Postgres
     {
         // Version variables used to check if the current build is the latest etc
         private const int versionMajor = 1;
-        private const int versionMin = 0;
+        private const int versionMin = 1;
         private const int versionBuild = 0;
 
         #region "Variables"
@@ -56,6 +57,14 @@ namespace Portable_Postgres
         /// Responsible for managing the download of the Postgres database server.
         /// </summary>
         private WebClient wb = null;
+        /// <summary>
+        /// Used to store the settings for the user.
+        /// </summary>
+        private XmlDocument settings = null;
+        /// <summary>
+        /// To avoid the TextChanged events from firing a save when being set text from the settings file.
+        /// </summary>
+        private bool formLoaded = false;
         #endregion
 
         #region "Methods - Event Handlers & Controls"
@@ -72,13 +81,80 @@ namespace Portable_Postgres
                 comboBox1.SelectedIndex = 0;
             else
                 comboBox1.SelectedIndex = 1;
+            // Check if settings file exists
+            if (File.Exists(Environment.CurrentDirectory + "\\Settings.xml"))
+            {
+                // Load settings file
+                string data = File.ReadAllText(Environment.CurrentDirectory + "\\Settings.xml");
+                settings = new XmlDocument();
+                settings.LoadXml(data);
+            }
+            else
+            {
+                // Create settings file
+                StringBuilder sb = new StringBuilder();
+                XmlWriter xw = XmlWriter.Create(sb);
+                // Start le document
+                xw.WriteStartDocument();
+                // Write first element
+                xw.WriteStartElement("settings");
+                // --- CONFIG
+
+                // Write db usr, pass and db settings
+                xw.WriteStartElement("user");                   // Client username
+                xw.WriteCData("User");
+                xw.WriteEndElement();
+
+                xw.WriteStartElement("pass");                   // Client password
+                xw.WriteCData("");
+                xw.WriteEndElement();
+
+                xw.WriteStartElement("db");                     // Client database
+                xw.WriteCData("postgres");
+                xw.WriteEndElement();
+
+                xw.WriteStartElement("path");                   // Client path
+                xw.WriteCData(Environment.CurrentDirectory);
+                xw.WriteEndElement();
+
+                // --- END OF CONFIG
+                // Write end element
+                xw.WriteEndElement();
+                // End the document
+                xw.WriteEndDocument();
+                xw.Close();
+                // Write the settings to file
+                File.WriteAllText(Environment.CurrentDirectory + "\\Settings.xml", sb.ToString());
+                // Set the settings heap variable
+                settings = new XmlDocument();
+                settings.LoadXml(sb.ToString());
+            }
             // Load client textbox with path
-            pathSQL.Text = Environment.CurrentDirectory;
+            pathSQL.Text = settings != null ? settings["settings"]["path"].InnerText : Environment.CurrentDirectory;
+            // Load client user, pass and db textboxes
+            dbUser.Text = settings != null ? settings["settings"]["user"].InnerText : "User";
+            dbPass.Text = settings != null ? settings["settings"]["pass"].InnerText : "";
+            dbDatabase.Text = settings != null ? settings["settings"]["db"].InnerText : "postgres";
+            // Check if postgres has been downloaded
+            if (!Directory.Exists(Environment.CurrentDirectory + "\\Postgres"))
+            {
+                // Disable starting and launching client - no Postgres installation
+                db2.Enabled = false;
+                db3.Enabled = false;
+            }
+            else
+            {
+                // Disable redownloading Postgres
+                db1.Enabled = false;
+            }
             // Attach version information
             Text += " - v" + versionMajor + "." + versionMin + "." + versionBuild;
+            versionText.Text = "v" + versionMajor + "." + versionMin + "." + versionBuild;
             // Launch updater thread
             Thread th = new Thread(new ParameterizedThreadStart(updateCheck));
             th.Start();
+            // Form has loaded
+            formLoaded = true;
         }
         /// <summary>
         /// Group 1 - causes the Postgres database files to be downloaded.
@@ -139,7 +215,7 @@ namespace Portable_Postgres
         /// <param name="e"></param>
         void wb_DownloadProgressChanged(object sender, DownloadProgressChangedEventArgs e)
         {
-            statusText.Text = e.BytesReceived + " bytes / " + e.TotalBytesToReceive + " bytes " + e.ProgressPercentage + "%)";
+            statusText.Text = e.BytesReceived + " bytes / " + e.TotalBytesToReceive + " bytes (" + e.ProgressPercentage + "%)";
             progressBar1.Value = e.ProgressPercentage;
         }
         /// <summary>
@@ -149,41 +225,14 @@ namespace Portable_Postgres
         /// <param name="e"></param>
         void  wb_DownloadFileCompleted(object sender, AsyncCompletedEventArgs e)
         {
-            statusText.Text = "Completed Postgres download! Extracting...";
-            buttDownload.Visible = true;
             buttDownloadAbort.Visible = false;
-            comboBox1.Enabled = true;
             progressBar1.Value = 0;
-            MessageBox.Show("Your Postgres-zip download will now be extracted, the application will freeze for a few seconds...", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Information);
             if (e.Cancelled || e.Error != null)
                 MessageBox.Show("Failed to download Postgres!", "Failed...", MessageBoxButtons.OK, MessageBoxIcon.Error);
             else
             {
-                // Extract zip file
-                try
-                {
-                    ZipFile f = new ZipFile(Environment.CurrentDirectory + "\\Postgres.zip");
-                    f.ExtractAll(Environment.CurrentDirectory + "\\Postgres");
-                    f.Dispose();
-                }
-                catch(Exception ex)
-                {
-                    MessageBox.Show("Failed to decompress zip-file:\n" + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    statusText.Text = "Failed to extract zip-file - possibly a corrupt download...";
-                    return;
-                }
-                // Delete zip file
-                try
-                { File.Delete(Environment.CurrentDirectory + "\\Postgres.zip"); }
-                catch { }
-                // Initialize database
-                if (initDatabase())
-                {
-                    statusText.Text = "Completed, Postgres server is ready and running :3!";
-                    MessageBox.Show("Installation finished, your server is now running!", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                }
-                else
-                    statusText.Text = "Failed to init database!";
+                // Invoke installation thread
+                threadInstallRun();
             }
         }
         /// <summary>
@@ -256,6 +305,7 @@ namespace Portable_Postgres
                         return;
                     }
                 // Reinit
+                MessageBox.Show("The database for the Postgres server will now be initialized...", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 if (initDatabase())
                     MessageBox.Show("Successfully recreated database!", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
@@ -274,6 +324,8 @@ namespace Portable_Postgres
                     p.Kill();
                 }
                 catch { }
+            // Kill any processes remaining
+            killAllProcesses();
         }
         /// <summary>
         /// Group 3 - launches the psql client.
@@ -315,6 +367,16 @@ namespace Portable_Postgres
             if (dbBrowse.SelectedPath.Length != 0)
                 pathSQL.Text = dbBrowse.SelectedPath;
         }
+        /// <summary>
+        /// Group 2 - used to wipe the Postgres installation.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void button1_Click(object sender, EventArgs e)
+        {
+            if (MessageBox.Show("Are you absolutely sure you want to delete all your Postgres files?\n\nThis will also delete your Postgres database, make sure you have all your SQL saved!", "WARNING", MessageBoxButtons.OKCancel, MessageBoxIcon.Stop) == System.Windows.Forms.DialogResult.OK)
+                wipe();
+        }
         #endregion
 
         #region "Methods - Postgres"
@@ -325,7 +387,6 @@ namespace Portable_Postgres
         /// <returns></returns>
         bool initDatabase()
         {
-            MessageBox.Show("The database for the Postgres server will now be initialized...", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Information);
             // Create database
             try
             {
@@ -365,6 +426,23 @@ namespace Portable_Postgres
             return true;
         }
         /// <summary>
+        /// Wipes the Postgres installation.
+        /// </summary>
+        void wipe()
+        {
+            // Disable groups 2 and 3
+            db2.Enabled = false;
+            db3.Enabled = false;
+            // Kill any server processes
+            killAllProcesses();
+            // Delete files
+            try
+            { Directory.Delete(Environment.CurrentDirectory + "\\Postgres", true); }
+            catch { }
+            // Enable group 1
+            db1.Enabled = true;
+        }
+        /// <summary>
         /// Stops the Postgres database server..rather dirty.
         /// </summary>
         void stopPostgresServer()
@@ -395,9 +473,7 @@ namespace Portable_Postgres
                 foreach (Process proc in Process.GetProcessesByName("postgres"))
                     proc.Kill();
             }
-            catch
-            {
-            }
+            catch { }
         }
         /// <summary>
         /// Launches the database server.
@@ -418,9 +494,13 @@ namespace Portable_Postgres
                 if (lsHide.Checked) p.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
 
                 p.Start();
-
-                lsStart.Visible = false;
-                lsStop.Visible = true;
+                // We use invoke in-case the installer is invoking this method from another thread not in-sync with the
+                // controls
+                Invoke((MethodInvoker)delegate()
+                {
+                    lsStart.Visible = false;
+                    lsStop.Visible = true;
+                });
             }
             catch (Exception ex)
             {
@@ -462,6 +542,135 @@ namespace Portable_Postgres
                 MessageBox.Show("Update check failed:\n" + ex.Message + "\n\nStack-trace:\n" + ex.StackTrace);
 #endif
             }
+        }
+        #endregion
+
+        #region "Methods - Settings & Control Value Changed Event Handlers"
+        /// <summary>
+        /// For updating any configuration keys; this does not instantly save, rather a timer is started to let
+        /// the user update other properties for ultimate I/O efficiency.
+        /// </summary>
+        /// <param name="key"></param>
+        /// <param name="value"></param>
+        public void updateSettings(string key, string value)
+        {
+            if (!formLoaded) return;
+            // Update setting
+            settings["settings"][key].InnerText = value;
+            // Trigger save timer - this will save any input after the user has stopped typing for 3s
+            saveSettings.Enabled = true;
+            // Reset the timer
+            saveSettings.Stop();
+            saveSettings.Start();
+        }
+        /// <summary>
+        /// Responsible for saving the configuration; read description of updateSettings.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void saveSettings_Tick(object sender, EventArgs e)
+        {
+            // -- Save the settings
+            // Disable timer
+            saveSettings.Enabled = false;
+            // Build text
+            StringBuilder sb = new StringBuilder();
+            XmlWriter xw = XmlWriter.Create(sb);
+            settings.WriteTo(xw);
+            xw.Close();
+            // Write to file
+            File.WriteAllText(Environment.CurrentDirectory + "\\Settings.xml", sb.ToString());
+#if DEBUG
+            System.Diagnostics.Debug.WriteLine("Settings configuration file saved!");
+#endif
+        }
+        // Event handlers for value changing
+        private void pathSQL_TextChanged(object sender, EventArgs e)
+        {
+            updateSettings("path", pathSQL.Text);
+        }
+        private void dbUser_TextChanged(object sender, EventArgs e)
+        {
+            updateSettings("user", dbUser.Text);
+        }
+        private void dbPass_TextChanged(object sender, EventArgs e)
+        {
+            updateSettings("pass", dbPass.Text);
+        }
+        private void dbDatabase_TextChanged(object sender, EventArgs e)
+        {
+            updateSettings("db", dbDatabase.Text);
+        }
+        #endregion
+
+        #region "Methods - Installation Process"
+        public void threadInstallRun()
+        {
+            Thread th = new Thread(new ParameterizedThreadStart(threadInstall));
+            th.Start(this);
+        }
+        public static void threadInstall(object o)
+        {
+            Form1 form = (Form1)o;
+            // Extract zip file
+            form.installUpdateProgress("Extracting server files...", 10);
+            try
+            {
+                ZipFile f = new ZipFile(Environment.CurrentDirectory + "\\Postgres.zip");
+                f.ExtractAll(Environment.CurrentDirectory + "\\Postgres");
+                f.Dispose();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Failed to decompress zip-file:\n" + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                form.installUpdateProgress("Failed to extract zip-file - possibly a corrupt download...", 0);
+                form.threadInstallEnableDownloading();
+                return;
+            }
+            // Delete zip file
+            form.installUpdateProgress("Deleting zip file...", 20);
+            try
+            { File.Delete(Environment.CurrentDirectory + "\\Postgres.zip"); }
+            catch { }
+            // Initialize database
+            form.installUpdateProgress("Initializing database structure...", 30);
+            if (form.initDatabase())
+            {
+                form.installUpdateProgress("Idle", 0);
+                MessageBox.Show("Installation finished, your server is now running!", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                form.Invoke((MethodInvoker)delegate()
+                {
+                    // Enable groups 2 and 3
+                    form.db2.Enabled = true;
+                    form.db3.Enabled = true;
+                    // Disable group 1
+                    form.db1.Enabled = false;
+                });
+            }
+            else
+            {
+                form.installUpdateProgress("Failed to init database!", 0);
+                form.threadInstallEnableDownloading();
+            }
+        }
+        public void installUpdateProgress(string text, int installProgress)
+        {
+            Invoke((MethodInvoker)delegate()
+            {
+                statusText.Text = text;
+                installationProgress.Value = installProgress;
+            });
+        }
+        /// <summary>
+        /// Enables the download URL box and button.
+        /// </summary>
+        void threadInstallEnableDownloading()
+        {
+            Invoke((MethodInvoker)delegate()
+            {
+                buttDownload.Visible = true;
+                comboBox1.Enabled = true;
+            });
         }
         #endregion
     }
