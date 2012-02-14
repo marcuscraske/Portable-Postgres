@@ -47,7 +47,7 @@ namespace Portable_Postgres
         /// <summary>
         /// URL of where the binaries of the application can be downloaded.
         /// </summary>
-        private const string updateDownloadURL = "https://raw.github.com/ubermeat/Portable-Postgres/tree/master/Binaries/Download.zip";
+        private const string updateDownloadURL = "https://raw.github.com/ubermeat/Portable-Postgres/master/Binaries/Download.zip";
         /// <summary>
         /// Used to store the process responsible for launching the Postgres server process; we can also use this to stop the
         /// server from being launched again etc.
