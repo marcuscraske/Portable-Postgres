@@ -32,7 +32,7 @@ namespace Portable_Postgres
     {
         // Version variables used to check if the current build is the latest etc
         private const int versionMajor = 1;
-        private const int versionMin = 1;
+        private const int versionMin = 2;
         private const int versionBuild = 0;
 
         #region "Variables"
@@ -339,7 +339,7 @@ namespace Portable_Postgres
                 Process p = new Process();
                 p.StartInfo.WorkingDirectory = pathSQL.Text;
                 p.StartInfo.FileName = "cmd.exe";
-                p.StartInfo.Arguments = "/c " + Environment.CurrentDirectory + "\\Postgres\\pgsql\\bin\\psql.exe " + (dbDatabase.TextLength != 0 ? " " + dbDatabase.Text + (dbUser.TextLength != 0 ? " " + dbUser.Text + (dbPass.TextLength != 0 ? " " + dbPass.Text : "") : "") : "");
+                p.StartInfo.Arguments = "/c \"\"" + Environment.CurrentDirectory + "\\Postgres\\pgsql\\bin\\psql.exe\" " + (dbDatabase.TextLength != 0 ? " " + dbDatabase.Text + (dbUser.TextLength != 0 ? " " + dbUser.Text + (dbPass.TextLength != 0 ? " " + dbPass.Text : "") : "") : "") + "\"";
                 p.Start();
             }
             catch (Exception ex)
@@ -396,7 +396,7 @@ namespace Portable_Postgres
                 p.StartInfo.Arguments = "-D \"" + Environment.CurrentDirectory + "\\Postgres\\Database\"";
                 p.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
                 p.Start();
-                p.WaitForExit(60000);
+                p.WaitForExit();
             }
             catch (Exception ex)
             {
@@ -416,7 +416,7 @@ namespace Portable_Postgres
                 p.StartInfo.Arguments = "-s -d -r -e User";
                 p.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
                 p.Start();
-                p.WaitForExit(3000);
+                p.WaitForExit();
             }
             catch (Exception ex)
             {

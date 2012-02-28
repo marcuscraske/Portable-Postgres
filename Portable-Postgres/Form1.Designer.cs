@@ -53,28 +53,28 @@
             this.pathSQL = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.versionText = new System.Windows.Forms.Label();
+            this.label11 = new System.Windows.Forms.Label();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.label10 = new System.Windows.Forms.Label();
+            this.label9 = new System.Windows.Forms.Label();
+            this.db3 = new System.Windows.Forms.Panel();
+            this.label8 = new System.Windows.Forms.Label();
+            this.db2 = new System.Windows.Forms.Panel();
+            this.button1 = new System.Windows.Forms.Button();
+            this.db1 = new System.Windows.Forms.Panel();
+            this.installationProgress = new System.Windows.Forms.ProgressBar();
             this.linkLabel1 = new System.Windows.Forms.LinkLabel();
             this.label2 = new System.Windows.Forms.Label();
             this.dbBrowse = new System.Windows.Forms.FolderBrowserDialog();
             this.saveSettings = new System.Windows.Forms.Timer(this.components);
-            this.button1 = new System.Windows.Forms.Button();
-            this.installationProgress = new System.Windows.Forms.ProgressBar();
-            this.label8 = new System.Windows.Forms.Label();
-            this.db1 = new System.Windows.Forms.Panel();
-            this.db2 = new System.Windows.Forms.Panel();
-            this.db3 = new System.Windows.Forms.Panel();
-            this.label9 = new System.Windows.Forms.Label();
-            this.label10 = new System.Windows.Forms.Label();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.label11 = new System.Windows.Forms.Label();
-            this.versionText = new System.Windows.Forms.Label();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
-            this.db1.SuspendLayout();
-            this.db2.SuspendLayout();
-            this.db3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            this.db3.SuspendLayout();
+            this.db2.SuspendLayout();
+            this.db1.SuspendLayout();
             this.SuspendLayout();
             // 
             // buttDownloadAbort
@@ -358,111 +358,68 @@
             this.splitContainer1.Panel2.Controls.Add(this.label2);
             this.splitContainer1.Panel2.ForeColor = System.Drawing.Color.White;
             this.splitContainer1.Size = new System.Drawing.Size(786, 379);
-            this.splitContainer1.SplitterDistance = 346;
+            this.splitContainer1.SplitterDistance = 349;
             this.splitContainer1.SplitterWidth = 1;
             this.splitContainer1.TabIndex = 8;
             // 
-            // linkLabel1
+            // versionText
             // 
-            this.linkLabel1.AutoSize = true;
-            this.linkLabel1.Dock = System.Windows.Forms.DockStyle.Left;
-            this.linkLabel1.LinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.linkLabel1.Location = new System.Drawing.Point(0, 0);
-            this.linkLabel1.Name = "linkLabel1";
-            this.linkLabel1.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.linkLabel1.Size = new System.Drawing.Size(110, 17);
-            this.linkLabel1.TabIndex = 9;
-            this.linkLabel1.TabStop = true;
-            this.linkLabel1.Text = "Contribute via Github";
-            this.linkLabel1.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel1_LinkClicked);
+            this.versionText.AutoSize = true;
+            this.versionText.BackColor = System.Drawing.Color.Transparent;
+            this.versionText.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.versionText.ForeColor = System.Drawing.Color.White;
+            this.versionText.Location = new System.Drawing.Point(679, 192);
+            this.versionText.Name = "versionText";
+            this.versionText.Size = new System.Drawing.Size(42, 16);
+            this.versionText.TabIndex = 11;
+            this.versionText.Text = "v0.0.0";
             // 
-            // label2
+            // label11
             // 
-            this.label2.AutoSize = true;
-            this.label2.Dock = System.Windows.Forms.DockStyle.Right;
-            this.label2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.label2.Location = new System.Drawing.Point(520, 0);
-            this.label2.Name = "label2";
-            this.label2.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.label2.Size = new System.Drawing.Size(266, 30);
-            this.label2.TabIndex = 8;
-            this.label2.Text = "Author: limpygnome (limpygnome@gmail.com)\r\nCreative Commons Attribution-ShareAlik" +
-    "e 3.0 unported";
-            this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.label11.AutoSize = true;
+            this.label11.BackColor = System.Drawing.Color.Transparent;
+            this.label11.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label11.ForeColor = System.Drawing.Color.White;
+            this.label11.Location = new System.Drawing.Point(636, 172);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(135, 20);
+            this.label11.TabIndex = 10;
+            this.label11.Text = "Portable Postgres";
             // 
-            // dbBrowse
+            // pictureBox1
             // 
-            this.dbBrowse.RootFolder = System.Environment.SpecialFolder.MyComputer;
+            this.pictureBox1.BackColor = System.Drawing.Color.Transparent;
+            this.pictureBox1.Image = global::Portable_Postgres.Properties.Resources.PostgreSQL_logo1;
+            this.pictureBox1.Location = new System.Drawing.Point(624, 26);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(157, 140);
+            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pictureBox1.TabIndex = 9;
+            this.pictureBox1.TabStop = false;
             // 
-            // saveSettings
+            // label10
             // 
-            this.saveSettings.Interval = 3000;
-            this.saveSettings.Tick += new System.EventHandler(this.saveSettings_Tick);
+            this.label10.AutoSize = true;
+            this.label10.BackColor = System.Drawing.Color.Transparent;
+            this.label10.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label10.ForeColor = System.Drawing.Color.White;
+            this.label10.Location = new System.Drawing.Point(3, 144);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(262, 16);
+            this.label10.TabIndex = 8;
+            this.label10.Text = "2. Launch Postgres Server and Client";
             // 
-            // button1
+            // label9
             // 
-            this.button1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.button1.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.button1.FlatAppearance.BorderSize = 0;
-            this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.button1.Location = new System.Drawing.Point(478, 3);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(94, 26);
-            this.button1.TabIndex = 5;
-            this.button1.Text = "Wipe Postgres";
-            this.button1.UseVisualStyleBackColor = false;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
-            // 
-            // installationProgress
-            // 
-            this.installationProgress.Location = new System.Drawing.Point(299, 82);
-            this.installationProgress.Maximum = 30;
-            this.installationProgress.Name = "installationProgress";
-            this.installationProgress.Size = new System.Drawing.Size(136, 23);
-            this.installationProgress.TabIndex = 7;
-            // 
-            // label8
-            // 
-            this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(32, 109);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(537, 13);
-            this.label8.TabIndex = 11;
-            this.label8.Text = "If the client disappears after launch, try wiping the database a few times by cli" +
-    "cking the \"Wipe Database\" button.";
-            // 
-            // db1
-            // 
-            this.db1.BackColor = System.Drawing.Color.Transparent;
-            this.db1.Controls.Add(this.installationProgress);
-            this.db1.Controls.Add(this.label3);
-            this.db1.Controls.Add(this.buttDownloadAbort);
-            this.db1.Controls.Add(this.progressBar1);
-            this.db1.Controls.Add(this.statusText);
-            this.db1.Controls.Add(this.buttDownload);
-            this.db1.Controls.Add(this.label4);
-            this.db1.Controls.Add(this.comboBox1);
-            this.db1.ForeColor = System.Drawing.Color.White;
-            this.db1.Location = new System.Drawing.Point(12, 28);
-            this.db1.Name = "db1";
-            this.db1.Size = new System.Drawing.Size(606, 113);
-            this.db1.TabIndex = 4;
-            // 
-            // db2
-            // 
-            this.db2.BackColor = System.Drawing.Color.Transparent;
-            this.db2.Controls.Add(this.button1);
-            this.db2.Controls.Add(this.lsStart);
-            this.db2.Controls.Add(this.lsWipe);
-            this.db2.Controls.Add(this.lsStop);
-            this.db2.Controls.Add(this.lsHide);
-            this.db2.Controls.Add(this.lsRestart);
-            this.db2.ForeColor = System.Drawing.Color.White;
-            this.db2.Location = new System.Drawing.Point(3, 163);
-            this.db2.Name = "db2";
-            this.db2.Size = new System.Drawing.Size(615, 40);
-            this.db2.TabIndex = 5;
+            this.label9.AutoSize = true;
+            this.label9.BackColor = System.Drawing.Color.Transparent;
+            this.label9.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label9.ForeColor = System.Drawing.Color.White;
+            this.label9.Location = new System.Drawing.Point(0, 9);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(159, 16);
+            this.label9.TabIndex = 7;
+            this.label9.Text = "1. Download Postgres";
             // 
             // db3
             // 
@@ -484,64 +441,107 @@
             this.db3.Size = new System.Drawing.Size(615, 134);
             this.db3.TabIndex = 6;
             // 
-            // label9
+            // label8
             // 
-            this.label9.AutoSize = true;
-            this.label9.BackColor = System.Drawing.Color.Transparent;
-            this.label9.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label9.ForeColor = System.Drawing.Color.White;
-            this.label9.Location = new System.Drawing.Point(0, 9);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(159, 16);
-            this.label9.TabIndex = 7;
-            this.label9.Text = "1. Download Postgres";
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(32, 109);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(537, 13);
+            this.label8.TabIndex = 11;
+            this.label8.Text = "If the client disappears after launch, try wiping the database a few times by cli" +
+    "cking the \"Wipe Database\" button.";
             // 
-            // label10
+            // db2
             // 
-            this.label10.AutoSize = true;
-            this.label10.BackColor = System.Drawing.Color.Transparent;
-            this.label10.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label10.ForeColor = System.Drawing.Color.White;
-            this.label10.Location = new System.Drawing.Point(3, 144);
-            this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(262, 16);
-            this.label10.TabIndex = 8;
-            this.label10.Text = "2. Launch Postgres Server and Client";
+            this.db2.BackColor = System.Drawing.Color.Transparent;
+            this.db2.Controls.Add(this.button1);
+            this.db2.Controls.Add(this.lsStart);
+            this.db2.Controls.Add(this.lsWipe);
+            this.db2.Controls.Add(this.lsStop);
+            this.db2.Controls.Add(this.lsHide);
+            this.db2.Controls.Add(this.lsRestart);
+            this.db2.ForeColor = System.Drawing.Color.White;
+            this.db2.Location = new System.Drawing.Point(3, 163);
+            this.db2.Name = "db2";
+            this.db2.Size = new System.Drawing.Size(615, 40);
+            this.db2.TabIndex = 5;
             // 
-            // pictureBox1
+            // button1
             // 
-            this.pictureBox1.BackColor = System.Drawing.Color.Transparent;
-            this.pictureBox1.Image = global::Portable_Postgres.Properties.Resources.PostgreSQL_logo1;
-            this.pictureBox1.Location = new System.Drawing.Point(624, 26);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(157, 140);
-            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.pictureBox1.TabIndex = 9;
-            this.pictureBox1.TabStop = false;
+            this.button1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.button1.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.button1.FlatAppearance.BorderSize = 0;
+            this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.button1.Location = new System.Drawing.Point(478, 3);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(94, 26);
+            this.button1.TabIndex = 5;
+            this.button1.Text = "Wipe Postgres";
+            this.button1.UseVisualStyleBackColor = false;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
-            // label11
+            // db1
             // 
-            this.label11.AutoSize = true;
-            this.label11.BackColor = System.Drawing.Color.Transparent;
-            this.label11.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label11.ForeColor = System.Drawing.Color.White;
-            this.label11.Location = new System.Drawing.Point(636, 172);
-            this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(135, 20);
-            this.label11.TabIndex = 10;
-            this.label11.Text = "Portable Postgres";
+            this.db1.BackColor = System.Drawing.Color.Transparent;
+            this.db1.Controls.Add(this.installationProgress);
+            this.db1.Controls.Add(this.label3);
+            this.db1.Controls.Add(this.buttDownloadAbort);
+            this.db1.Controls.Add(this.progressBar1);
+            this.db1.Controls.Add(this.statusText);
+            this.db1.Controls.Add(this.buttDownload);
+            this.db1.Controls.Add(this.label4);
+            this.db1.Controls.Add(this.comboBox1);
+            this.db1.ForeColor = System.Drawing.Color.White;
+            this.db1.Location = new System.Drawing.Point(12, 28);
+            this.db1.Name = "db1";
+            this.db1.Size = new System.Drawing.Size(606, 113);
+            this.db1.TabIndex = 4;
             // 
-            // versionText
+            // installationProgress
             // 
-            this.versionText.AutoSize = true;
-            this.versionText.BackColor = System.Drawing.Color.Transparent;
-            this.versionText.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.versionText.ForeColor = System.Drawing.Color.White;
-            this.versionText.Location = new System.Drawing.Point(679, 192);
-            this.versionText.Name = "versionText";
-            this.versionText.Size = new System.Drawing.Size(42, 16);
-            this.versionText.TabIndex = 11;
-            this.versionText.Text = "v0.0.0";
+            this.installationProgress.Location = new System.Drawing.Point(299, 82);
+            this.installationProgress.Maximum = 30;
+            this.installationProgress.Name = "installationProgress";
+            this.installationProgress.Size = new System.Drawing.Size(136, 23);
+            this.installationProgress.TabIndex = 7;
+            // 
+            // linkLabel1
+            // 
+            this.linkLabel1.AutoSize = true;
+            this.linkLabel1.Dock = System.Windows.Forms.DockStyle.Left;
+            this.linkLabel1.LinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.linkLabel1.Location = new System.Drawing.Point(0, 0);
+            this.linkLabel1.Name = "linkLabel1";
+            this.linkLabel1.Padding = new System.Windows.Forms.Padding(2);
+            this.linkLabel1.Size = new System.Drawing.Size(110, 17);
+            this.linkLabel1.TabIndex = 9;
+            this.linkLabel1.TabStop = true;
+            this.linkLabel1.Text = "Contribute via Github";
+            this.linkLabel1.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel1_LinkClicked);
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Dock = System.Windows.Forms.DockStyle.Right;
+            this.label2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.label2.Location = new System.Drawing.Point(520, 0);
+            this.label2.Name = "label2";
+            this.label2.Padding = new System.Windows.Forms.Padding(2);
+            this.label2.Size = new System.Drawing.Size(266, 30);
+            this.label2.TabIndex = 8;
+            this.label2.Text = "Author: limpygnome (limpygnome@gmail.com)\r\nCreative Commons Attribution-ShareAlik" +
+    "e 3.0 unported";
+            this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // dbBrowse
+            // 
+            this.dbBrowse.RootFolder = System.Environment.SpecialFolder.MyComputer;
+            // 
+            // saveSettings
+            // 
+            this.saveSettings.Interval = 3000;
+            this.saveSettings.Tick += new System.EventHandler(this.saveSettings_Tick);
             // 
             // Form1
             // 
@@ -562,13 +562,13 @@
             this.splitContainer1.Panel2.ResumeLayout(false);
             this.splitContainer1.Panel2.PerformLayout();
             this.splitContainer1.ResumeLayout(false);
-            this.db1.ResumeLayout(false);
-            this.db1.PerformLayout();
-            this.db2.ResumeLayout(false);
-            this.db2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.db3.ResumeLayout(false);
             this.db3.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            this.db2.ResumeLayout(false);
+            this.db2.PerformLayout();
+            this.db1.ResumeLayout(false);
+            this.db1.PerformLayout();
             this.ResumeLayout(false);
 
         }
