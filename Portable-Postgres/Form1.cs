@@ -32,7 +32,7 @@ namespace Portable_Postgres
     {
         // Version variables used to check if the current build is the latest etc
         private const int versionMajor = 1;
-        private const int versionMin = 2;
+        private const int versionMin = 3;
         private const int versionBuild = 0;
 
         #region "Variables"
@@ -135,18 +135,6 @@ namespace Portable_Postgres
             dbUser.Text = settings != null ? settings["settings"]["user"].InnerText : "User";
             dbPass.Text = settings != null ? settings["settings"]["pass"].InnerText : "";
             dbDatabase.Text = settings != null ? settings["settings"]["db"].InnerText : "postgres";
-            // Check if postgres has been downloaded
-            if (!Directory.Exists(Environment.CurrentDirectory + "\\Postgres"))
-            {
-                // Disable starting and launching client - no Postgres installation
-                db2.Enabled = false;
-                db3.Enabled = false;
-            }
-            else
-            {
-                // Disable redownloading Postgres
-                db1.Enabled = false;
-            }
             // Attach version information
             Text += " - v" + versionMajor + "." + versionMin + "." + versionBuild;
             versionText.Text = "v" + versionMajor + "." + versionMin + "." + versionBuild;
@@ -155,6 +143,21 @@ namespace Portable_Postgres
             th.Start();
             // Form has loaded
             formLoaded = true;
+        }
+        /// <summary>
+        /// Executed when the form is shown.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Form1_Shown(object sender, EventArgs e)
+        {
+            // Check if postgres has been downloaded
+            if (!Directory.Exists(Environment.CurrentDirectory + "\\Postgres"))
+                // Show the download group
+                controlsShowDownload();
+            else
+                // Show the launch group
+                controlsShowLaunch();
         }
         /// <summary>
         /// Group 1 - causes the Postgres database files to be downloaded.
@@ -375,7 +378,57 @@ namespace Portable_Postgres
         private void button1_Click(object sender, EventArgs e)
         {
             if (MessageBox.Show("Are you absolutely sure you want to delete all your Postgres files?\n\nThis will also delete your Postgres database, make sure you have all your SQL saved!", "WARNING", MessageBoxButtons.OKCancel, MessageBoxIcon.Stop) == System.Windows.Forms.DialogResult.OK)
-                wipe();
+            {
+                Thread th = new Thread(new ParameterizedThreadStart(threadWipeDb));
+                th.Start(this);
+            }
+        }
+        /// <summary>
+        /// Shows the
+        /// </summary>
+        public void controlsShowLaunch()
+        {
+            Invoke((MethodInvoker)delegate()
+            {
+                groupLaunch.Visible = true;
+                groupDownload.Visible = false;
+            });
+        }
+        public void controlsShowDownload()
+        {
+            Invoke((MethodInvoker)delegate()
+            {
+                groupDownload.Visible = true;
+                groupLaunch.Visible = false;
+            });
+        }
+        public void controlsEnableLaunch()
+        {
+            Invoke((MethodInvoker)delegate()
+            {
+                groupLaunch.Enabled = true;
+            });
+        }
+        public void controlsDisableLaunch()
+        {
+            Invoke((MethodInvoker)delegate()
+            {
+                groupLaunch.Enabled = false;
+            });
+        }
+        public void controlsEnableDownload()
+        {
+            Invoke((MethodInvoker)delegate()
+            {
+                groupDownload.Enabled = true;
+            });
+        }
+        public void controlsDisableDownload()
+        {
+            Invoke((MethodInvoker)delegate()
+            {
+                groupDownload.Enabled = false;
+            });
         }
         #endregion
 
@@ -430,17 +483,16 @@ namespace Portable_Postgres
         /// </summary>
         void wipe()
         {
-            // Disable groups 2 and 3
-            db2.Enabled = false;
-            db3.Enabled = false;
+            // Disable launch group
+            controlsDisableLaunch();
             // Kill any server processes
             killAllProcesses();
             // Delete files
             try
             { Directory.Delete(Environment.CurrentDirectory + "\\Postgres", true); }
             catch { }
-            // Enable group 1
-            db1.Enabled = true;
+            // Enable launch group
+            controlsEnableLaunch();
         }
         /// <summary>
         /// Stops the Postgres database server..rather dirty.
@@ -640,11 +692,8 @@ namespace Portable_Postgres
                 MessageBox.Show("Installation finished, your server is now running!", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 form.Invoke((MethodInvoker)delegate()
                 {
-                    // Enable groups 2 and 3
-                    form.db2.Enabled = true;
-                    form.db3.Enabled = true;
-                    // Disable group 1
-                    form.db1.Enabled = false;
+                    // Show launching group
+                    form.controlsShowLaunch();
                 });
             }
             else
@@ -652,6 +701,25 @@ namespace Portable_Postgres
                 form.installUpdateProgress("Failed to init database!", 0);
                 form.threadInstallEnableDownloading();
             }
+        }
+        public static void threadWipeDb(object o)
+        {
+            Form1 form = (Form1)o;
+            // Show download group but disable abort and download buttons
+            form.controlsShowDownload();
+            form.buttDownload.Enabled = false;
+            form.buttDownloadAbort.Enabled = false;
+
+            // Execute the method
+            form.wipe();
+
+            // Show the launch group
+            form.controlsShowLaunch();
+
+            // Enable the download and abort buttons
+            form.buttDownload.Enabled = true;
+            form.buttDownloadAbort.Enabled = true;
+
         }
         public void installUpdateProgress(string text, int installProgress)
         {
