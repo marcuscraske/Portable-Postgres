@@ -7,3 +7,23 @@ Version:		1.0.0
 Allows you to create a portable Postgres database server, with the ability
 to download the server-files and have your database setup with an initial
 database (Postgres) and user-role (User - no password).
+
+
+Change-log
+============================================================================
+v1.4.0:
+- Added change-log.
+- Added "View Help" window with a help page for using Portable Postgres for new users.
+- Added an update window; this replaces the old message-box style to be more user-friendly.
+- Added an updater client to update Portable Postgres; this saves the user having to visit Github and extract a zip.
+- Added automatic launching of the Postgres server when Portable Postgres is launched.
+- Added detection of previous Postgres installation to avoid issues with Portable Postgres.
+- Added the ability to have Portable Postgres place a shortcut on the desktop during first runtime.
+- Portable Postgres now uses a custom icon <3.
+- "Wipe Database" button now uses mutli-threading to avoid the application going unresponsive.
+- Checkbox controls are now saved in the settings file.
+- Code changes:
+-- Setting keys now use constants (easier management).
+-- Added more regions.
+-- Settings are now saved on exit by force.
+-- Settings keys are checked to exist, else they're added.

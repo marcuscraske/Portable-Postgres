@@ -28,12 +28,24 @@ using System.Xml;
 
 namespace Portable_Postgres
 {
-    public partial class Form1 : Form
+    public partial class Main : Form
     {
-        // Version variables used to check if the current build is the latest etc
-        private const int versionMajor = 1;
-        private const int versionMin = 3;
-        private const int versionBuild = 0;
+        #region "Constants
+            #region "Versioning"
+            // Version constants used to check if the current build is the latest etc
+            private const int versionMajor = 1;
+            private const int versionMin = 4;
+            private const int versionBuild = 0;
+            #endregion
+            #region "Settings keynames"
+            private const string constSettingsClientPath = "client_path";
+            private const string constSettingsClientUser = "client_user";
+            private const string constSettingsClientPass = "client_pass";
+            private const string constSettingsClientDb = "client_db";
+            private const string constSettingsHideServerWindow = "hide_server_window";
+            private const string constSettingsAutomaticallyLaunch = "automatically_launch";
+            #endregion
+        #endregion
 
         #region "Variables"
         /// <summary>
@@ -44,10 +56,6 @@ namespace Portable_Postgres
         /// URL of the version file used to determine if a new version has been released.
         /// </summary>
         private const string updateURL = "https://raw.github.com/ubermeat/Portable-Postgres/master/VERSION";
-        /// <summary>
-        /// URL of where the binaries of the application can be downloaded.
-        /// </summary>
-        private const string updateDownloadURL = "https://raw.github.com/ubermeat/Portable-Postgres/master/Binaries/Download.zip";
         /// <summary>
         /// Used to store the process responsible for launching the Postgres server process; we can also use this to stop the
         /// server from being launched again etc.
@@ -71,7 +79,7 @@ namespace Portable_Postgres
         /// <summary>
         /// Executed when the form is invoked on start-up.
         /// </summary>
-        public Form1()
+        public Main()
         {
             InitializeComponent();
             // Select a download URL based on the OS architecture; we can detect this by
@@ -101,20 +109,29 @@ namespace Portable_Postgres
                 // --- CONFIG
 
                 // Write db usr, pass and db settings
-                xw.WriteStartElement("user");                   // Client username
+                xw.WriteStartElement(constSettingsClientUser);                  // Client username
                 xw.WriteCData("User");
                 xw.WriteEndElement();
 
-                xw.WriteStartElement("pass");                   // Client password
+                xw.WriteStartElement(constSettingsClientPass);                  // Client password
                 xw.WriteCData("");
                 xw.WriteEndElement();
 
-                xw.WriteStartElement("db");                     // Client database
+                xw.WriteStartElement(constSettingsClientDb);                    // Client database
                 xw.WriteCData("postgres");
                 xw.WriteEndElement();
 
-                xw.WriteStartElement("path");                   // Client path
+                xw.WriteStartElement(constSettingsClientPath);                  // Client path
                 xw.WriteCData(Environment.CurrentDirectory);
+                xw.WriteEndElement();
+
+                // Write checkbox settings
+                xw.WriteStartElement(constSettingsHideServerWindow);            // Hide server window
+                xw.WriteCData("1");
+                xw.WriteEndElement();
+
+                xw.WriteStartElement(constSettingsAutomaticallyLaunch);         // Automatically launch
+                xw.WriteCData("1");
                 xw.WriteEndElement();
 
                 // --- END OF CONFIG
@@ -128,19 +145,25 @@ namespace Portable_Postgres
                 // Set the settings heap variable
                 settings = new XmlDocument();
                 settings.LoadXml(sb.ToString());
+
+                // Show the install dialogue too
+                new NewInstall().Show();
             }
             // Load client textbox with path
-            pathSQL.Text = settings != null ? settings["settings"]["path"].InnerText : Environment.CurrentDirectory;
+            pathSQL.Text = settings != null && settings["settings"][constSettingsClientPath] != null ? settings["settings"][constSettingsClientPath].InnerText : Environment.CurrentDirectory;
             // Load client user, pass and db textboxes
-            dbUser.Text = settings != null ? settings["settings"]["user"].InnerText : "User";
-            dbPass.Text = settings != null ? settings["settings"]["pass"].InnerText : "";
-            dbDatabase.Text = settings != null ? settings["settings"]["db"].InnerText : "postgres";
+            dbUser.Text = settings != null && settings["settings"][constSettingsClientUser] != null ? settings["settings"][constSettingsClientUser].InnerText : "User";
+            dbPass.Text = settings != null && settings["settings"][constSettingsClientPass] != null ? settings["settings"][constSettingsClientPass].InnerText : "";
+            dbDatabase.Text = settings != null && settings["settings"][constSettingsClientDb] != null ? settings["settings"][constSettingsClientDb].InnerText : "postgres";
+            // Set the checkboxes
+            lsHide.Checked = settings["settings"][constSettingsHideServerWindow] != null && settings != null && settings["settings"][constSettingsHideServerWindow].InnerText.Equals("1");
+            lsAutoLaunch.Checked = settings != null && settings["settings"][constSettingsAutomaticallyLaunch] != null && settings["settings"][constSettingsAutomaticallyLaunch].InnerText.Equals("1");
             // Attach version information
             Text += " - v" + versionMajor + "." + versionMin + "." + versionBuild;
             versionText.Text = "v" + versionMajor + "." + versionMin + "." + versionBuild;
             // Launch updater thread
             Thread th = new Thread(new ParameterizedThreadStart(updateCheck));
-            th.Start();
+            th.Start(this);
             // Form has loaded
             formLoaded = true;
         }
@@ -151,13 +174,24 @@ namespace Portable_Postgres
         /// <param name="e"></param>
         private void Form1_Shown(object sender, EventArgs e)
         {
+            // Launch the detection window for diagnostics
+            DetectionWindow detect = new DetectionWindow();
+            if(detect.conflictsFound()) detect.Show();
             // Check if postgres has been downloaded
             if (!Directory.Exists(Environment.CurrentDirectory + "\\Postgres"))
                 // Show the download group
                 controlsShowDownload();
             else
+            {
                 // Show the launch group
                 controlsShowLaunch();
+                if (!detect.conflictsFound()) // We will only automatically launch if no conflicts were found
+                {
+                    // Check if to automatically launch the server
+                    if (lsAutoLaunch.Checked)
+                        launchPostgresServer();
+                }
+            }
         }
         /// <summary>
         /// Group 1 - causes the Postgres database files to be downloaded.
@@ -290,28 +324,12 @@ namespace Portable_Postgres
         /// <param name="e"></param>
         private void lsWipe_Click(object sender, EventArgs e)
         {
+            // Check if the server is running - if so, stop it
             if (p != null)
-                MessageBox.Show("Cannot wipe the database whilst it is running!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            else
-            {
-                // Kill any potential processes
-                killAllProcesses();
-                // Delete directory
-                if (Directory.Exists(Environment.CurrentDirectory + "\\Postgres\\Database"))
-                    try
-                    {
-                        Directory.Delete(Environment.CurrentDirectory + "\\Postgres\\Database", true);
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show("Failed to delete database directory:\n" + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-                        return;
-                    }
-                // Reinit
-                MessageBox.Show("The database for the Postgres server will now be initialized...", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                if (initDatabase())
-                    MessageBox.Show("Successfully recreated database!", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            }
+                stopPostgresServer();
+            // Launch wiping process in a different thread to the one being used for UI to stop the program from becoming unresponsive
+            Thread thread = new Thread(new ParameterizedThreadStart(threadWipeDb));
+            thread.Start(this);
         }
         /// <summary>
         /// Shuts down the database server when the application is closed.
@@ -329,6 +347,12 @@ namespace Portable_Postgres
                 catch { }
             // Kill any processes remaining
             killAllProcesses();
+            // Force saving of settings
+            if (saveSettings.Enabled)
+            {
+                saveSettings.Enabled = false;
+                settingsSave();
+            }
         }
         /// <summary>
         /// Group 3 - launches the psql client.
@@ -379,12 +403,22 @@ namespace Portable_Postgres
         {
             if (MessageBox.Show("Are you absolutely sure you want to delete all your Postgres files?\n\nThis will also delete your Postgres database, make sure you have all your SQL saved!", "WARNING", MessageBoxButtons.OKCancel, MessageBoxIcon.Stop) == System.Windows.Forms.DialogResult.OK)
             {
-                Thread th = new Thread(new ParameterizedThreadStart(threadWipeDb));
+                Thread th = new Thread(new ParameterizedThreadStart(threadWipePostgres));
                 th.Start(this);
             }
         }
         /// <summary>
-        /// Shows the
+        /// Invoked when the user clicks the help hyper-link label.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void linkHelp_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            HelpWindow hw = new HelpWindow();
+            hw.Show();
+        }
+        /// <summary>
+        /// Shows the launch panel.
         /// </summary>
         public void controlsShowLaunch()
         {
@@ -394,6 +428,9 @@ namespace Portable_Postgres
                 groupDownload.Visible = false;
             });
         }
+        /// <summary>
+        /// Shows the download panel.
+        /// </summary>
         public void controlsShowDownload()
         {
             Invoke((MethodInvoker)delegate()
@@ -402,6 +439,9 @@ namespace Portable_Postgres
                 groupLaunch.Visible = false;
             });
         }
+        /// <summary>
+        /// Enables the launch panel.
+        /// </summary>
         public void controlsEnableLaunch()
         {
             Invoke((MethodInvoker)delegate()
@@ -409,6 +449,9 @@ namespace Portable_Postgres
                 groupLaunch.Enabled = true;
             });
         }
+        /// <summary>
+        /// Disables the launch panel.
+        /// </summary>
         public void controlsDisableLaunch()
         {
             Invoke((MethodInvoker)delegate()
@@ -416,6 +459,9 @@ namespace Portable_Postgres
                 groupLaunch.Enabled = false;
             });
         }
+        /// <summary>
+        /// Enables the download panel.
+        /// </summary>
         public void controlsEnableDownload()
         {
             Invoke((MethodInvoker)delegate()
@@ -423,6 +469,9 @@ namespace Portable_Postgres
                 groupDownload.Enabled = true;
             });
         }
+        /// <summary>
+        /// Disables the download panel.
+        /// </summary>
         public void controlsDisableDownload()
         {
             Invoke((MethodInvoker)delegate()
@@ -490,7 +539,7 @@ namespace Portable_Postgres
             // Delete files
             try
             { Directory.Delete(Environment.CurrentDirectory + "\\Postgres", true); }
-            catch { }
+            catch (Exception ex) { MessageBox.Show("Error wiping Postgres directory:\n\n" + ex.Message + "\n\nFailed to complete operation, probably a file-lock - make sure no clients are open, else log-off and log-on again to resolve the issue!", "Failed", MessageBoxButtons.OK, MessageBoxIcon.Error); }
             // Enable launch group
             controlsEnableLaunch();
         }
@@ -577,16 +626,16 @@ namespace Portable_Postgres
                 sw.Close();
                 wc.Dispose();
                 // Compare and ask user
-                if ((currVersionMajor != versionMajor || currVersionMin != versionMin || currVersionBuild != versionBuild)
-                 && MessageBox.Show("An update is available, would you like to download it?\n\nCurrent version:\n"
-                 + versionMajor + "." + versionMin + "." + versionBuild + "\n\nLatest version:\n" + currVersionMajor + "." + currVersionMin + "." + currVersionBuild,
-                 "Update Available",
-                    MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes)
-                    try
+                if (currVersionMajor != versionMajor || currVersionMin != versionMin || currVersionBuild != versionBuild)
+                {
+                    // Show the update window
+                    Main main = (Main)o;
+                    main.Invoke((MethodInvoker)delegate()
                     {
-                        Process.Start(updateDownloadURL);
-                    }
-                    catch (Exception ex) { MessageBox.Show("Failed to open browser, try manually! Error:\n" + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error); }
+                        UpdateAvailable ua = new UpdateAvailable(versionMajor + "." + versionMin + "." + versionBuild, currVersionMajor + "." + currVersionMin + "." + currVersionBuild);
+                        ua.Show();
+                    });
+                }
             }
             catch(Exception ex)
             {
@@ -608,7 +657,14 @@ namespace Portable_Postgres
         {
             if (!formLoaded) return;
             // Update setting
-            settings["settings"][key].InnerText = value;
+            if (settings["settings"][key] != null)
+                settings["settings"][key].InnerText = value;
+            else
+            {
+                XmlElement node = settings.CreateElement(key);
+                node.InnerText = value;
+                settings["settings"].AppendChild(node);
+            }
             // Trigger save timer - this will save any input after the user has stopped typing for 3s
             saveSettings.Enabled = true;
             // Reset the timer
@@ -625,6 +681,11 @@ namespace Portable_Postgres
             // -- Save the settings
             // Disable timer
             saveSettings.Enabled = false;
+            // Save settings
+            settingsSave();
+        }
+        private void settingsSave()
+        {
             // Build text
             StringBuilder sb = new StringBuilder();
             XmlWriter xw = XmlWriter.Create(sb);
@@ -639,19 +700,37 @@ namespace Portable_Postgres
         // Event handlers for value changing
         private void pathSQL_TextChanged(object sender, EventArgs e)
         {
-            updateSettings("path", pathSQL.Text);
+            updateSettings(constSettingsClientPath, pathSQL.Text);
         }
         private void dbUser_TextChanged(object sender, EventArgs e)
         {
-            updateSettings("user", dbUser.Text);
+            updateSettings(constSettingsClientUser, dbUser.Text);
         }
         private void dbPass_TextChanged(object sender, EventArgs e)
         {
-            updateSettings("pass", dbPass.Text);
+            updateSettings(constSettingsClientPass, dbPass.Text);
         }
         private void dbDatabase_TextChanged(object sender, EventArgs e)
         {
-            updateSettings("db", dbDatabase.Text);
+            updateSettings(constSettingsClientDb, dbDatabase.Text);
+        }
+        /// <summary>
+        /// Invoked when the checkbox control for "Hide server window" is changed.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void lsHide_CheckedChanged(object sender, EventArgs e)
+        {
+            updateSettings(constSettingsHideServerWindow, lsHide.Checked ? "1" : "0");
+        }
+        /// <summary>
+        /// Invoked when the checkbox control for "Automatically launch" is changed.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void lsAutoLaunch_CheckedChanged(object sender, EventArgs e)
+        {
+            updateSettings(constSettingsAutomaticallyLaunch, lsAutoLaunch.Checked ? "1" : "0");
         }
         #endregion
 
@@ -663,7 +742,7 @@ namespace Portable_Postgres
         }
         public static void threadInstall(object o)
         {
-            Form1 form = (Form1)o;
+            Main form = (Main)o;
             // Extract zip file
             form.installUpdateProgress("Extracting server files...", 10);
             try
@@ -689,7 +768,6 @@ namespace Portable_Postgres
             if (form.initDatabase())
             {
                 form.installUpdateProgress("Idle", 0);
-                MessageBox.Show("Installation finished, your server is now running!", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 form.Invoke((MethodInvoker)delegate()
                 {
                     // Show launching group
@@ -702,24 +780,58 @@ namespace Portable_Postgres
                 form.threadInstallEnableDownloading();
             }
         }
-        public static void threadWipeDb(object o)
+        /// <summary>
+        /// Wipes the entire Postgres installation.
+        /// </summary>
+        /// <param name="o"></param>
+        public static void threadWipePostgres(object o)
         {
-            Form1 form = (Form1)o;
-            // Show download group but disable abort and download buttons
-            form.controlsShowDownload();
-            form.buttDownload.Enabled = false;
-            form.buttDownloadAbort.Enabled = false;
-
+            Main form = (Main)o;
+            form.Invoke((MethodInvoker)delegate()
+            {
+                // Show download group but disable abort and download buttons
+                form.controlsShowDownload();
+                form.buttDownload.Enabled = false;
+                form.buttDownloadAbort.Enabled = false;
+            });
             // Execute the method
             form.wipe();
-
             // Show the launch group
             form.controlsShowLaunch();
+            form.Invoke((MethodInvoker)delegate()
+            {
+                // Enable the download and abort buttons
+                form.buttDownload.Enabled = true;
+                form.buttDownloadAbort.Enabled = true;
+            });
 
-            // Enable the download and abort buttons
-            form.buttDownload.Enabled = true;
-            form.buttDownloadAbort.Enabled = true;
-
+        }
+        /// <summary>
+        /// Wipes the database used by the Postgres server.
+        /// </summary>
+        /// <param name="o"></param>
+        public static void threadWipeDb(object o)
+        {
+            Main form = (Main)o;
+            // Disable launch group
+            form.controlsDisableLaunch();
+            // Kill any potential processes
+            form.killAllProcesses();
+            // Delete the database directory if it exists
+            if (Directory.Exists(Environment.CurrentDirectory + "\\Postgres\\Database"))
+                try
+                {
+                    Directory.Delete(Environment.CurrentDirectory + "\\Postgres\\Database", true);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Failed to delete database directory:\n" + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                    return;
+                }
+            // Reinitialize the database
+            form.initDatabase();
+            // Re-enable launch group
+            form.controlsEnableLaunch();
         }
         public void installUpdateProgress(string text, int installProgress)
         {

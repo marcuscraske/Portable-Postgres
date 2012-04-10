@@ -1,0 +1,11 @@
+X:\Dropbox\Dropbox\Projects\Github\Portable-Postgres\Portable-Postgres-Updater\bin\Release\Update.exe.config
+X:\Dropbox\Dropbox\Projects\Github\Portable-Postgres\Portable-Postgres-Updater\bin\Release\Update.exe
+X:\Dropbox\Dropbox\Projects\Github\Portable-Postgres\Portable-Postgres-Updater\bin\Release\Update.pdb
+X:\Dropbox\Dropbox\Projects\Github\Portable-Postgres\Portable-Postgres-Updater\bin\Release\Ionic.Zip.Reduced.dll
+X:\Dropbox\Dropbox\Projects\Github\Portable-Postgres\Portable-Postgres-Updater\obj\x86\Release\ResolveAssemblyReference.cache
+X:\Dropbox\Dropbox\Projects\Github\Portable-Postgres\Portable-Postgres-Updater\obj\x86\Release\Portable_Postgres_Updater.Main.resources
+X:\Dropbox\Dropbox\Projects\Github\Portable-Postgres\Portable-Postgres-Updater\obj\x86\Release\Portable_Postgres_Updater.Properties.Resources.resources
+X:\Dropbox\Dropbox\Projects\Github\Portable-Postgres\Portable-Postgres-Updater\obj\x86\Release\ResGen.read.1.tlog
+X:\Dropbox\Dropbox\Projects\Github\Portable-Postgres\Portable-Postgres-Updater\obj\x86\Release\ResGen.write.1.tlog
+X:\Dropbox\Dropbox\Projects\Github\Portable-Postgres\Portable-Postgres-Updater\obj\x86\Release\Update.exe
+X:\Dropbox\Dropbox\Projects\Github\Portable-Postgres\Portable-Postgres-Updater\obj\x86\Release\Update.pdb

@@ -1,20 +1,8 @@
-﻿/*
- * Creative Commons Attribution-ShareAlike 3.0 unported
- * ***************************************************************
- * Author:  limpygnome
- * E-mail:  limpygnome@gmail.com
- * Site:    ubermeat.co.uk
- * ***************************************************************
- * Credit to:
- * -- none
- * 
- */
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
 
-namespace Portable_Postgres
+namespace Portable_Postgres_Updater
 {
     static class Program
     {

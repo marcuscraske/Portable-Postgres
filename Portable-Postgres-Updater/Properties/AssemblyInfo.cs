@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Portable-Postgres")]
-[assembly: AssemblyDescription("An application to install and manage a portable version of the Postgres database server.")]
+[assembly: AssemblyTitle("Portable-Postgres Updater")]
+[assembly: AssemblyDescription("An updater for the Portable Postgres application.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("UberMeat")]
-[assembly: AssemblyProduct("Portable-Postgres")]
+[assembly: AssemblyProduct("Portable-Postgres Updater")]
 [assembly: AssemblyCopyright("UberMeat - Creative Commons Attribution-ShareAlike 3.0 unported")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("27fd2f0f-9f7f-4eff-a5ce-08bd485edaf8")]
+[assembly: Guid("6ababf25-b108-4a31-a160-4ec3552bf895")]
 
 // Version information for an assembly consists of the following four values:
 //
