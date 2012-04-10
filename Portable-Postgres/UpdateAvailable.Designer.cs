@@ -39,6 +39,7 @@
             this.txtNewVersion = new System.Windows.Forms.Label();
             this.buttUpdate = new System.Windows.Forms.Button();
             this.buttIgnore = new System.Windows.Forms.Button();
+            this.button1 = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -50,7 +51,7 @@
             this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(435, 35);
+            this.panel1.Size = new System.Drawing.Size(470, 35);
             this.panel1.TabIndex = 0;
             // 
             // label1
@@ -71,14 +72,14 @@
             this.panel2.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel2.Location = new System.Drawing.Point(0, 35);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(435, 3);
+            this.panel2.Size = new System.Drawing.Size(470, 3);
             this.panel2.TabIndex = 1;
             // 
             // txtLabelNew
             // 
             this.txtLabelNew.AutoSize = true;
             this.txtLabelNew.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtLabelNew.Location = new System.Drawing.Point(60, 41);
+            this.txtLabelNew.Location = new System.Drawing.Point(85, 41);
             this.txtLabelNew.Name = "txtLabelNew";
             this.txtLabelNew.Size = new System.Drawing.Size(299, 16);
             this.txtLabelNew.TabIndex = 2;
@@ -133,7 +134,7 @@
             this.buttUpdate.FlatAppearance.BorderSize = 0;
             this.buttUpdate.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.buttUpdate.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.buttUpdate.Location = new System.Drawing.Point(322, 145);
+            this.buttUpdate.Location = new System.Drawing.Point(357, 145);
             this.buttUpdate.Name = "buttUpdate";
             this.buttUpdate.Size = new System.Drawing.Size(101, 26);
             this.buttUpdate.TabIndex = 7;
@@ -148,7 +149,7 @@
             this.buttIgnore.FlatAppearance.BorderSize = 0;
             this.buttIgnore.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.buttIgnore.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.buttIgnore.Location = new System.Drawing.Point(246, 145);
+            this.buttIgnore.Location = new System.Drawing.Point(173, 145);
             this.buttIgnore.Name = "buttIgnore";
             this.buttIgnore.Size = new System.Drawing.Size(70, 26);
             this.buttIgnore.TabIndex = 8;
@@ -156,12 +157,28 @@
             this.buttIgnore.UseVisualStyleBackColor = false;
             this.buttIgnore.Click += new System.EventHandler(this.buttIgnore_Click);
             // 
+            // button1
+            // 
+            this.button1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.button1.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.button1.FlatAppearance.BorderSize = 0;
+            this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.button1.Location = new System.Drawing.Point(249, 145);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(102, 26);
+            this.button1.TabIndex = 9;
+            this.button1.Text = "View Changelog";
+            this.button1.UseVisualStyleBackColor = false;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
             // UpdateAvailable
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(435, 183);
+            this.ClientSize = new System.Drawing.Size(470, 183);
+            this.Controls.Add(this.button1);
             this.Controls.Add(this.buttIgnore);
             this.Controls.Add(this.buttUpdate);
             this.Controls.Add(this.txtNewVersion);
@@ -197,5 +214,6 @@
         private System.Windows.Forms.Label txtNewVersion;
         private System.Windows.Forms.Button buttUpdate;
         private System.Windows.Forms.Button buttIgnore;
+        private System.Windows.Forms.Button button1;
     }
 }

@@ -234,7 +234,7 @@
             this.buttIgnore.Name = "buttIgnore";
             this.buttIgnore.Size = new System.Drawing.Size(101, 26);
             this.buttIgnore.TabIndex = 16;
-            this.buttIgnore.Text = "Ignore All";
+            this.buttIgnore.Text = "Continue";
             this.buttIgnore.UseVisualStyleBackColor = false;
             this.buttIgnore.Click += new System.EventHandler(this.buttIgnore_Click);
             // 

@@ -11,6 +11,10 @@ database (Postgres) and user-role (User - no password).
 
 Change-log
 ============================================================================
+v1.5.1:
+- Added support for pgAdmin III.
+-- Configuration of servers, changes the specified: user, pass and database etc.
+- Added "View Changelog" to update window.
 v1.4.0:
 - Added change-log.
 - Added "View Help" window with a help page for using Portable Postgres for new users.

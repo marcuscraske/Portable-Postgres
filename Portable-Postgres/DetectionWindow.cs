@@ -91,6 +91,7 @@ namespace Portable_Postgres
                 p.Kill();
             foreach (Process p in Process.GetProcessesByName("initdb"))
                 p.Kill();
+            panelProcessRunning.Visible = false;
         }
         /// <summary>
         /// Invoked when the user clicks the Stop Service button.
@@ -102,6 +103,7 @@ namespace Portable_Postgres
             foreach (ServiceController service in ServiceController.GetServices())
                 if (service.ServiceName.Contains("postgres") && service.Status != ServiceControllerStatus.Stopped)
                     service.Stop();
+            panelServiceRunning.Visible = false;
         }
         #endregion
 

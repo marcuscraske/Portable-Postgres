@@ -69,6 +69,7 @@
             this.label2 = new System.Windows.Forms.Label();
             this.dbBrowse = new System.Windows.Forms.FolderBrowserDialog();
             this.saveSettings = new System.Windows.Forms.Timer(this.components);
+            this.buttPgAdmin3 = new System.Windows.Forms.Button();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
@@ -292,7 +293,7 @@
             this.button5.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.button5.Location = new System.Drawing.Point(13, 127);
             this.button5.Name = "button5";
-            this.button5.Size = new System.Drawing.Size(590, 26);
+            this.button5.Size = new System.Drawing.Size(374, 26);
             this.button5.TabIndex = 4;
             this.button5.Text = "Launch Client (psql)";
             this.button5.UseVisualStyleBackColor = false;
@@ -357,7 +358,7 @@
             this.splitContainer1.Panel2.Controls.Add(this.label2);
             this.splitContainer1.Panel2.ForeColor = System.Drawing.Color.White;
             this.splitContainer1.Size = new System.Drawing.Size(741, 219);
-            this.splitContainer1.SplitterDistance = 185;
+            this.splitContainer1.SplitterDistance = 188;
             this.splitContainer1.SplitterWidth = 1;
             this.splitContainer1.TabIndex = 8;
             // 
@@ -399,6 +400,7 @@
             // groupLaunch
             // 
             this.groupLaunch.BackColor = System.Drawing.Color.Transparent;
+            this.groupLaunch.Controls.Add(this.buttPgAdmin3);
             this.groupLaunch.Controls.Add(this.lsAutoLaunch);
             this.groupLaunch.Controls.Add(this.label8);
             this.groupLaunch.Controls.Add(this.button1);
@@ -565,6 +567,21 @@
             this.saveSettings.Interval = 3000;
             this.saveSettings.Tick += new System.EventHandler(this.saveSettings_Tick);
             // 
+            // buttPgAdmin3
+            // 
+            this.buttPgAdmin3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.buttPgAdmin3.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.buttPgAdmin3.FlatAppearance.BorderSize = 0;
+            this.buttPgAdmin3.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.buttPgAdmin3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.buttPgAdmin3.Location = new System.Drawing.Point(393, 127);
+            this.buttPgAdmin3.Name = "buttPgAdmin3";
+            this.buttPgAdmin3.Size = new System.Drawing.Size(210, 26);
+            this.buttPgAdmin3.TabIndex = 9;
+            this.buttPgAdmin3.Text = "Launch pgAdmin";
+            this.buttPgAdmin3.UseVisualStyleBackColor = false;
+            this.buttPgAdmin3.Click += new System.EventHandler(this.buttPgAdmin3_Click);
+            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -636,6 +653,7 @@
         private System.Windows.Forms.Label versionText;
         private System.Windows.Forms.CheckBox lsAutoLaunch;
         private System.Windows.Forms.LinkLabel linkHelp;
+        private System.Windows.Forms.Button buttPgAdmin3;
     }
 }
 

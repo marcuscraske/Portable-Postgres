@@ -22,6 +22,10 @@ namespace Portable_Postgres
 {
     public partial class UpdateAvailable : Form
     {
+        #region "Constants"
+        private const string changeLogURL = "https://raw.github.com/ubermeat/Portable-Postgres/master/README";
+        #endregion
+
         #region "Variables"
         private string versionCurrent;
         private string versionNew;
@@ -67,6 +71,15 @@ namespace Portable_Postgres
         {
             txtCurrVersion.Text = versionCurrent;
             txtNewVersion.Text = versionNew;
+        }
+        /// <summary>
+        /// Launches the URL with a change-log.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void button1_Click(object sender, EventArgs e)
+        {
+            System.Diagnostics.Process.Start(changeLogURL);
         }
         #endregion
     }

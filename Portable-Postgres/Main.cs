@@ -25,6 +25,7 @@ using System.Diagnostics;
 using System.Net.Sockets;
 using System.Threading;
 using System.Xml;
+using Microsoft.Win32;
 
 namespace Portable_Postgres
 {
@@ -34,7 +35,7 @@ namespace Portable_Postgres
             #region "Versioning"
             // Version constants used to check if the current build is the latest etc
             private const int versionMajor = 1;
-            private const int versionMin = 4;
+            private const int versionMin = 5;
             private const int versionBuild = 0;
             #endregion
             #region "Settings keynames"
@@ -45,10 +46,14 @@ namespace Portable_Postgres
             private const string constSettingsHideServerWindow = "hide_server_window";
             private const string constSettingsAutomaticallyLaunch = "automatically_launch";
             #endregion
+            #region "pgAdmin 3"
+            private const string pgAdmin3_ServersKey = @"Software\pgAdmin III\Servers";
+            private static string pgAdmin3_PasswordDir = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\PostgreSQL";
+            #endregion
         #endregion
 
         #region "Variables"
-        /// <summary>
+            /// <summary>
         /// Contains the URL for the Github repository.
         /// </summary>
         private const string githubURL = "https://github.com/ubermeat/Portable-Postgres";
@@ -478,6 +483,102 @@ namespace Portable_Postgres
             {
                 groupDownload.Enabled = false;
             });
+        }
+        private void buttPgAdmin3_Click(object sender, EventArgs e)
+        {
+            // Configuring pgAdmin 3 is not critical code, therefore it can fail regardless...it's just an extra feature; this may fail due
+            // to security limitations of the machine being used (which is likely to happen due to being portable and used on e.g. public
+            // machines).
+            try
+            {
+                // Decide if to update the settings.ini file if the registry key does not exist
+                bool createPortablePostgresKey = false;
+                RegistryKey rk = Registry.CurrentUser.OpenSubKey(pgAdmin3_ServersKey, true);
+                if (rk == null)
+                {
+                    // First-time - configure the settings.ini
+                    File.WriteAllText(AppDomain.CurrentDomain.BaseDirectory + "\\Postgres\\pgsql\\pgAdmin III\\Settings.ini", "[Servers]\r\nCount=1\n\nServers/1]\r\nServer=127.0.0.1\nDescription=Portable-Postgres\nPort=5432");
+                    using (StreamWriter sw = new StreamWriter(AppDomain.CurrentDomain.BaseDirectory + "\\Postgres\\pgsql\\pgAdmin III\\Settings.ini"))
+                    {
+                        sw.WriteLine("[Servers]");
+                        sw.WriteLine("Count=1");
+                        sw.WriteLine("[Servers/1]");
+                        sw.WriteLine("Server=127.0.0.1");
+                        sw.WriteLine("Description=Portable-Postgres");
+                        sw.WriteLine("Port=5432");
+                        sw.Flush();
+                        sw.Close();
+                    }
+                    // Create the subkey for servers and the count key
+                    rk = Registry.CurrentUser.CreateSubKey(pgAdmin3_ServersKey);
+                    rk.SetValue("Count", 0);
+                    rk.Flush();
+                    // Set create pp key to true
+                    createPortablePostgresKey = true;
+                }
+                else
+                {
+                    // Lets see if Portable-Postgres exists, if so update it - else create a new key
+                    RegistryKey subKey;
+                    bool foundKey = false;
+                    foreach (string server in rk.GetSubKeyNames())
+                    {
+                        subKey = rk.OpenSubKey(server, true);
+                        if (subKey.GetValue("Description").Equals("Portable-Postgres"))
+                        {
+                            foundKey = true;
+                            // Update the server details
+                            subKey.SetValue("Username", dbUser.Text);
+                            subKey.SetValue("Database", dbDatabase.Text);
+                            subKey.SetValue("StorePwd", "true");
+                            subKey.SetValue("LastDatabase", dbDatabase.Text);
+                            subKey.Flush();
+                        }
+                    }
+                    // Key was not found - create it (probably been renamed must we dont want to break the users custom config so it's better/safer to create new)
+                    if (!foundKey) createPortablePostgresKey = true;
+                }
+                // Check if to create the server key
+                if (createPortablePostgresKey)
+                {
+                    // Grab the number of servers
+                    int serverCount = (int)rk.GetValue("Count");
+                    // Create the server key
+                    RegistryKey nKey = rk.CreateSubKey((serverCount + 1).ToString());
+                    nKey.SetValue("Colour", "#FFFFFF");
+                    nKey.SetValue("Database", dbDatabase.Text);
+                    nKey.SetValue("DbRestriction", "");
+                    nKey.SetValue("Description", "Portable-Postgres");
+                    nKey.SetValue("DiscoveryID", "");
+                    nKey.SetValue("Group", "Servers");
+                    nKey.SetValue("HostAddr", "");
+                    nKey.SetValue("LastDatabase", dbDatabase.Text);
+                    nKey.SetValue("LastSchema", "");
+                    nKey.SetValue("Port", 5432);
+                    nKey.SetValue("Restore", "true");
+                    nKey.SetValue("Rolename", "");
+                    nKey.SetValue("Server", "127.0.0.1");
+                    nKey.SetValue("Service", "");
+                    nKey.SetValue("ServiceID", "");
+                    nKey.SetValue("SSL", 0);
+                    nKey.SetValue("SSLCert", "");
+                    nKey.SetValue("SSLCrl", "");
+                    nKey.SetValue("SSLKey", "");
+                    nKey.SetValue("SSLRootCert", "");
+                    nKey.SetValue("StorePwd", "true");
+                    nKey.SetValue("Username", dbUser.Text);
+                    nKey.Flush();
+                    // Increment the count by one
+                    rk.SetValue("Count", serverCount + 1);
+                }
+                // Check the local folder exists for the password file
+                if (!Directory.Exists(pgAdmin3_PasswordDir)) Directory.CreateDirectory(pgAdmin3_PasswordDir);
+                // Write the stored password file
+                File.WriteAllText(pgAdmin3_PasswordDir + "\\pgpass.conf", "127.0.0.1:5432:*:" + dbUser.Text + ":" + dbPass.Text);
+            }
+            catch { }
+            // Launch Portable Postgres 3
+            Process.Start(AppDomain.CurrentDomain.BaseDirectory + "\\Postgres\\pgsql\\bin\\pgAdmin3.exe");
         }
         #endregion
 
