@@ -36,7 +36,7 @@ namespace Portable_Postgres
             // Version constants used to check if the current build is the latest etc
             private const int versionMajor = 1;
             private const int versionMin = 5;
-            private const int versionBuild = 0;
+            private const int versionBuild = 2;
             #endregion
             #region "Settings keynames"
             private const string constSettingsClientPath = "client_path";
@@ -166,9 +166,9 @@ namespace Portable_Postgres
             // Attach version information
             Text += " - v" + versionMajor + "." + versionMin + "." + versionBuild;
             versionText.Text = "v" + versionMajor + "." + versionMin + "." + versionBuild;
-            // Launch updater thread
-            Thread th = new Thread(new ParameterizedThreadStart(updateCheck));
-            th.Start(this);
+            // Launch the updater to check for le updates with the current PID - to terminate us
+            try
+            { Process.Start(Environment.CurrentDirectory + "\\Updater.exe"); } catch { }
             // Form has loaded
             formLoaded = true;
         }
@@ -358,6 +358,8 @@ namespace Portable_Postgres
                 saveSettings.Enabled = false;
                 settingsSave();
             }
+            // Cause application to exit - in-case any other forms are open
+            Application.Exit();
         }
         /// <summary>
         /// Group 3 - launches the psql client.
@@ -709,40 +711,6 @@ namespace Portable_Postgres
                 // Display error
                 p = null;
                 MessageBox.Show("Failed to launch Postgres database server:\n" + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-            }
-        }
-        #endregion
-
-        #region "Methods - Update Check"
-        public static void updateCheck(object o)
-        {
-            try
-            {
-                WebClient wc = new WebClient();
-                StreamReader sw = new StreamReader(wc.OpenRead(updateURL));
-                // Get the current version
-                int currVersionMajor = int.Parse(sw.ReadLine());
-                int currVersionMin = int.Parse(sw.ReadLine());
-                int currVersionBuild = int.Parse(sw.ReadLine());
-                sw.Close();
-                wc.Dispose();
-                // Compare and ask user
-                if (currVersionMajor != versionMajor || currVersionMin != versionMin || currVersionBuild != versionBuild)
-                {
-                    // Show the update window
-                    Main main = (Main)o;
-                    main.Invoke((MethodInvoker)delegate()
-                    {
-                        UpdateAvailable ua = new UpdateAvailable(versionMajor + "." + versionMin + "." + versionBuild, currVersionMajor + "." + currVersionMin + "." + currVersionBuild);
-                        ua.Show();
-                    });
-                }
-            }
-            catch(Exception ex)
-            {
-#if DEBUG
-                MessageBox.Show("Update check failed:\n" + ex.Message + "\n\nStack-trace:\n" + ex.StackTrace);
-#endif
             }
         }
         #endregion

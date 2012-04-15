@@ -125,7 +125,7 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "NewInstall";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "New Installation - Portable Postgres - UberMeat.co.uk FOSS";
+            this.Text = "New Installation - Portable Postgres - Ubermeat.co.uk FOSS";
             this.TopMost = true;
             this.Load += new System.EventHandler(this.NewInstall_Load);
             this.panel1.ResumeLayout(false);

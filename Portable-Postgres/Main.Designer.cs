@@ -57,6 +57,7 @@
             this.label11 = new System.Windows.Forms.Label();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.groupLaunch = new System.Windows.Forms.Panel();
+            this.buttPgAdmin3 = new System.Windows.Forms.Button();
             this.lsAutoLaunch = new System.Windows.Forms.CheckBox();
             this.label8 = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
@@ -69,7 +70,6 @@
             this.label2 = new System.Windows.Forms.Label();
             this.dbBrowse = new System.Windows.Forms.FolderBrowserDialog();
             this.saveSettings = new System.Windows.Forms.Timer(this.components);
-            this.buttPgAdmin3 = new System.Windows.Forms.Button();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
@@ -358,7 +358,7 @@
             this.splitContainer1.Panel2.Controls.Add(this.label2);
             this.splitContainer1.Panel2.ForeColor = System.Drawing.Color.White;
             this.splitContainer1.Size = new System.Drawing.Size(741, 219);
-            this.splitContainer1.SplitterDistance = 188;
+            this.splitContainer1.SplitterDistance = 193;
             this.splitContainer1.SplitterWidth = 1;
             this.splitContainer1.TabIndex = 8;
             // 
@@ -425,6 +425,21 @@
             this.groupLaunch.Name = "groupLaunch";
             this.groupLaunch.Size = new System.Drawing.Size(615, 183);
             this.groupLaunch.TabIndex = 5;
+            // 
+            // buttPgAdmin3
+            // 
+            this.buttPgAdmin3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.buttPgAdmin3.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.buttPgAdmin3.FlatAppearance.BorderSize = 0;
+            this.buttPgAdmin3.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.buttPgAdmin3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.buttPgAdmin3.Location = new System.Drawing.Point(393, 127);
+            this.buttPgAdmin3.Name = "buttPgAdmin3";
+            this.buttPgAdmin3.Size = new System.Drawing.Size(210, 26);
+            this.buttPgAdmin3.TabIndex = 9;
+            this.buttPgAdmin3.Text = "Launch pgAdmin";
+            this.buttPgAdmin3.UseVisualStyleBackColor = false;
+            this.buttPgAdmin3.Click += new System.EventHandler(this.buttPgAdmin3_Click);
             // 
             // lsAutoLaunch
             // 
@@ -567,21 +582,6 @@
             this.saveSettings.Interval = 3000;
             this.saveSettings.Tick += new System.EventHandler(this.saveSettings_Tick);
             // 
-            // buttPgAdmin3
-            // 
-            this.buttPgAdmin3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.buttPgAdmin3.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.buttPgAdmin3.FlatAppearance.BorderSize = 0;
-            this.buttPgAdmin3.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.buttPgAdmin3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.buttPgAdmin3.Location = new System.Drawing.Point(393, 127);
-            this.buttPgAdmin3.Name = "buttPgAdmin3";
-            this.buttPgAdmin3.Size = new System.Drawing.Size(210, 26);
-            this.buttPgAdmin3.TabIndex = 9;
-            this.buttPgAdmin3.Text = "Launch pgAdmin";
-            this.buttPgAdmin3.UseVisualStyleBackColor = false;
-            this.buttPgAdmin3.Click += new System.EventHandler(this.buttPgAdmin3_Click);
-            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -595,7 +595,7 @@
             this.Name = "Main";
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Portable Postgres - UberMeat.co.uk FOSS";
+            this.Text = "Portable Postgres - Ubermeat.co.uk FOSS";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
             this.Shown += new System.EventHandler(this.Form1_Shown);
             this.splitContainer1.Panel1.ResumeLayout(false);

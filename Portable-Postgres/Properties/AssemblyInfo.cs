@@ -8,9 +8,9 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("Portable-Postgres")]
 [assembly: AssemblyDescription("An application to install and manage a portable version of the Postgres database server.")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("UberMeat")]
+[assembly: AssemblyCompany("Ubermeat")]
 [assembly: AssemblyProduct("Portable-Postgres")]
-[assembly: AssemblyCopyright("UberMeat - Creative Commons Attribution-ShareAlike 3.0 unported")]
+[assembly: AssemblyCopyright("Ubermeat - Creative Commons Attribution-ShareAlike 3.0 unported")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

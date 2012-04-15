@@ -2,32 +2,22 @@ Portable Postgres
 ============================================================================
 License:		Creative Commons Attribution-ShareAlike 3.0 unported
 Author(s):		limpygnome			limpygnome@gmail.com
-Version:		1.0.0
+Version:		1.5.2
 
-Allows you to create a portable Postgres database server, with the ability
-to download the server-files and have your database setup with an initial
-database (Postgres) and user-role (User - no password).
+Allows you to create a portable Postgres database server with many more
+features.
 
-
-Change-log
-============================================================================
-v1.5.1:
-- Added support for pgAdmin III.
--- Configuration of servers, changes the specified: user, pass and database etc.
-- Added "View Changelog" to update window.
-v1.4.0:
-- Added change-log.
-- Added "View Help" window with a help page for using Portable Postgres for new users.
-- Added an update window; this replaces the old message-box style to be more user-friendly.
-- Added an updater client to update Portable Postgres; this saves the user having to visit Github and extract a zip.
-- Added automatic launching of the Postgres server when Portable Postgres is launched.
-- Added detection of previous Postgres installation to avoid issues with Portable Postgres.
-- Added the ability to have Portable Postgres place a shortcut on the desktop during first runtime.
-- Portable Postgres now uses a custom icon <3.
-- "Wipe Database" button now uses mutli-threading to avoid the application going unresponsive.
-- Checkbox controls are now saved in the settings file.
-- Code changes:
--- Setting keys now use constants (easier management).
--- Added more regions.
--- Settings are now saved on exit by force.
--- Settings keys are checked to exist, else they're added.
+Features:
+- Create a portable Postgres database server.
+- Simply click download and have the application:
+-- Download the Postgres server files.
+-- Initialize the database "postgres".
+-- Create the user-role "User" with no password.
+- Launch the psql client with the ability to easily change the
+  working-directory, as well as the user, pass and database used;
+  these settings are also saved automatically for next-time.
+- Similar to the psql client, you can launch the pgAdmin III client;
+  the settings to connect to Portable Postgres are automatically
+  created and updated too!
+- Includes runtime issues detection, ensuring e.g. no other Postgres
+  databases are running simultaneously to avoid startup issues.

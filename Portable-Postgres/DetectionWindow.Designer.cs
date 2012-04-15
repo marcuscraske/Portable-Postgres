@@ -255,7 +255,7 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "DetectionWindow";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Runtime Issues Detected - Portable Postgres - UberMeat.co.uk FOSS";
+            this.Text = "Runtime Issues Detected - Portable Postgres - Ubermeat.co.uk FOSS";
             this.TopMost = true;
             this.Load += new System.EventHandler(this.DetectionWindow_Load);
             this.panel1.ResumeLayout(false);

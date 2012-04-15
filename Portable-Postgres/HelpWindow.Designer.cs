@@ -118,7 +118,7 @@
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "HelpWindow";
-            this.Text = "Help - Portable Postgres - UberMeat.co.uk FOSS";
+            this.Text = "Help - Portable Postgres - Ubermeat.co.uk FOSS";
             this.Shown += new System.EventHandler(this.HelpWindow_Shown);
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel1.PerformLayout();
