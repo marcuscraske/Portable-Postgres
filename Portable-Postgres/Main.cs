@@ -34,33 +34,29 @@ namespace Portable_Postgres
         #region "Constants
             #region "Versioning"
             // Version constants used to check if the current build is the latest etc
-            private const int versionMajor = 1;
-            private const int versionMin = 5;
-            private const int versionBuild = 2;
+            private const int VERSION_MAJOR = 1;
+            private const int VERSION_MINOR = 5;
+            private const int VERSION_BUILD = 2;
             #endregion
             #region "Settings keynames"
-            private const string constSettingsClientPath = "client_path";
-            private const string constSettingsClientUser = "client_user";
-            private const string constSettingsClientPass = "client_pass";
-            private const string constSettingsClientDb = "client_db";
-            private const string constSettingsHideServerWindow = "hide_server_window";
-            private const string constSettingsAutomaticallyLaunch = "automatically_launch";
+            private const string SETTINGS_CLIENT_PATH = "client_path";
+            private const string SETTINGS_CLIENT_USER = "client_user";
+            private const string SETTINGS_CLIENT_PASS = "client_pass";
+            private const string SETTINGS_CLIENT_DB = "client_db";
+            private const string SETTINGS_HIDE_SERVER_WINDOW = "hide_server_window";
+            private const string SETTINGS_AUTO_LAUNCH = "automatically_launch";
             #endregion
             #region "pgAdmin 3"
-            private const string pgAdmin3_ServersKey = @"Software\pgAdmin III\Servers";
-            private static string pgAdmin3_PasswordDir = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\PostgreSQL";
+            private const string PGADMIN3_REGISTRY_KEY_SERVER = @"Software\pgAdmin III\Servers";
+            private static string PGADMIN3_PASSWORD_DIR = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\PostgreSQL";
+            #endregion
+            #region "URLs"
+            private const string URL_CONTRIBUTE = @"https://github.com/ubermeat/Portable-Postgres";
+            private const string URL_HELP = @"http://ubermeat.co.uk/projects/portable-postgres/help";
             #endregion
         #endregion
 
         #region "Variables"
-            /// <summary>
-        /// Contains the URL for the Github repository.
-        /// </summary>
-        private const string githubURL = "https://github.com/ubermeat/Portable-Postgres";
-        /// <summary>
-        /// URL of the version file used to determine if a new version has been released.
-        /// </summary>
-        private const string updateURL = "https://raw.github.com/ubermeat/Portable-Postgres/master/VERSION";
         /// <summary>
         /// Used to store the process responsible for launching the Postgres server process; we can also use this to stop the
         /// server from being launched again etc.
@@ -78,6 +74,15 @@ namespace Portable_Postgres
         /// To avoid the TextChanged events from firing a save when being set text from the settings file.
         /// </summary>
         private bool formLoaded = false;
+        /// <summary>
+        /// Stores the current instance of the debug console; we only want one at a time, hence
+        /// we'll either instantiate this variable or recreate and reset this variable.
+        /// </summary>
+        DebugConsole debugConsole = null;
+        /// <summary>
+        /// Used to track the execution of the application for debugging purposes.
+        /// </summary>
+        Debugger debug;
         #endregion
 
         #region "Methods - Event Handlers & Controls"
@@ -114,28 +119,28 @@ namespace Portable_Postgres
                 // --- CONFIG
 
                 // Write db usr, pass and db settings
-                xw.WriteStartElement(constSettingsClientUser);                  // Client username
+                xw.WriteStartElement(SETTINGS_CLIENT_USER);                  // Client username
                 xw.WriteCData("User");
                 xw.WriteEndElement();
 
-                xw.WriteStartElement(constSettingsClientPass);                  // Client password
+                xw.WriteStartElement(SETTINGS_CLIENT_PASS);                  // Client password
                 xw.WriteCData("");
                 xw.WriteEndElement();
 
-                xw.WriteStartElement(constSettingsClientDb);                    // Client database
+                xw.WriteStartElement(SETTINGS_CLIENT_DB);                    // Client database
                 xw.WriteCData("postgres");
                 xw.WriteEndElement();
 
-                xw.WriteStartElement(constSettingsClientPath);                  // Client path
+                xw.WriteStartElement(SETTINGS_CLIENT_PATH);                  // Client path
                 xw.WriteCData(Environment.CurrentDirectory);
                 xw.WriteEndElement();
 
                 // Write checkbox settings
-                xw.WriteStartElement(constSettingsHideServerWindow);            // Hide server window
+                xw.WriteStartElement(SETTINGS_HIDE_SERVER_WINDOW);            // Hide server window
                 xw.WriteCData("1");
                 xw.WriteEndElement();
 
-                xw.WriteStartElement(constSettingsAutomaticallyLaunch);         // Automatically launch
+                xw.WriteStartElement(SETTINGS_AUTO_LAUNCH);         // Automatically launch
                 xw.WriteCData("1");
                 xw.WriteEndElement();
 
@@ -155,17 +160,17 @@ namespace Portable_Postgres
                 new NewInstall().Show();
             }
             // Load client textbox with path
-            pathSQL.Text = settings != null && settings["settings"][constSettingsClientPath] != null ? settings["settings"][constSettingsClientPath].InnerText : Environment.CurrentDirectory;
+            pathSQL.Text = settings != null && settings["settings"][SETTINGS_CLIENT_PATH] != null ? settings["settings"][SETTINGS_CLIENT_PATH].InnerText : Environment.CurrentDirectory;
             // Load client user, pass and db textboxes
-            dbUser.Text = settings != null && settings["settings"][constSettingsClientUser] != null ? settings["settings"][constSettingsClientUser].InnerText : "User";
-            dbPass.Text = settings != null && settings["settings"][constSettingsClientPass] != null ? settings["settings"][constSettingsClientPass].InnerText : "";
-            dbDatabase.Text = settings != null && settings["settings"][constSettingsClientDb] != null ? settings["settings"][constSettingsClientDb].InnerText : "postgres";
+            dbUser.Text = settings != null && settings["settings"][SETTINGS_CLIENT_USER] != null ? settings["settings"][SETTINGS_CLIENT_USER].InnerText : "User";
+            dbPass.Text = settings != null && settings["settings"][SETTINGS_CLIENT_PASS] != null ? settings["settings"][SETTINGS_CLIENT_PASS].InnerText : "";
+            dbDatabase.Text = settings != null && settings["settings"][SETTINGS_CLIENT_DB] != null ? settings["settings"][SETTINGS_CLIENT_DB].InnerText : "postgres";
             // Set the checkboxes
-            lsHide.Checked = settings["settings"][constSettingsHideServerWindow] != null && settings != null && settings["settings"][constSettingsHideServerWindow].InnerText.Equals("1");
-            lsAutoLaunch.Checked = settings != null && settings["settings"][constSettingsAutomaticallyLaunch] != null && settings["settings"][constSettingsAutomaticallyLaunch].InnerText.Equals("1");
+            lsHide.Checked = settings["settings"][SETTINGS_HIDE_SERVER_WINDOW] != null && settings != null && settings["settings"][SETTINGS_HIDE_SERVER_WINDOW].InnerText.Equals("1");
+            lsAutoLaunch.Checked = settings != null && settings["settings"][SETTINGS_AUTO_LAUNCH] != null && settings["settings"][SETTINGS_AUTO_LAUNCH].InnerText.Equals("1");
             // Attach version information
-            Text += " - v" + versionMajor + "." + versionMin + "." + versionBuild;
-            versionText.Text = "v" + versionMajor + "." + versionMin + "." + versionBuild;
+            Text += " - v" + VERSION_MAJOR + "." + VERSION_MINOR + "." + VERSION_BUILD;
+            versionText.Text = "v" + VERSION_MAJOR + "." + VERSION_MINOR + "." + VERSION_BUILD;
             // Launch the updater to check for le updates with the current PID - to terminate us
             try
             { Process.Start(Environment.CurrentDirectory + "\\Updater.exe"); } catch { }
@@ -179,13 +184,18 @@ namespace Portable_Postgres
         /// <param name="e"></param>
         private void Form1_Shown(object sender, EventArgs e)
         {
+            debug = new Debugger();
             // Launch the detection window for diagnostics
             DetectionWindow detect = new DetectionWindow();
             if(detect.conflictsFound()) detect.Show();
             // Check if postgres has been downloaded
-            if (!Directory.Exists(Environment.CurrentDirectory + "\\Postgres"))
+            string pDir = Environment.CurrentDirectory + "\\Postgres";
+            if (!Directory.Exists(pDir))
+            {
                 // Show the download group
                 controlsShowDownload();
+                debug.write("Could not find Postgres directory at '" + pDir + "'!");
+            }
             else
             {
                 // Show the launch group
@@ -197,6 +207,7 @@ namespace Portable_Postgres
                         launchPostgresServer();
                 }
             }
+            debug.write("Shown complete.");
         }
         /// <summary>
         /// Group 1 - causes the Postgres database files to be downloaded.
@@ -382,15 +393,6 @@ namespace Portable_Postgres
             }
         }
         /// <summary>
-        /// Github contribution link.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
-        {
-            Process.Start(githubURL);
-        }
-        /// <summary>
         /// Group 3 - used to browse for a folder.
         /// </summary>
         /// <param name="sender"></param>
@@ -421,8 +423,28 @@ namespace Portable_Postgres
         /// <param name="e"></param>
         private void linkHelp_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            HelpWindow hw = new HelpWindow();
-            hw.Show();
+            launchURL(URL_HELP);
+        }
+        /// <summary>
+        /// Invoked when the user clicks the contribute hyper-link label.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void linkContribute_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            Process.Start(URL_CONTRIBUTE);
+        }
+        /// <summary>
+        /// Invoked when the debug console link-label is clicked.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void linkDebug_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            if (debugConsole != null)
+                debugConsole.Dispose();
+            debugConsole = new DebugConsole();
+            debugConsole.Show();
         }
         /// <summary>
         /// Shows the launch panel.
@@ -495,7 +517,7 @@ namespace Portable_Postgres
             {
                 // Decide if to update the settings.ini file if the registry key does not exist
                 bool createPortablePostgresKey = false;
-                RegistryKey rk = Registry.CurrentUser.OpenSubKey(pgAdmin3_ServersKey, true);
+                RegistryKey rk = Registry.CurrentUser.OpenSubKey(PGADMIN3_REGISTRY_KEY_SERVER, true);
                 if (rk == null)
                 {
                     // First-time - configure the settings.ini
@@ -512,7 +534,7 @@ namespace Portable_Postgres
                         sw.Close();
                     }
                     // Create the subkey for servers and the count key
-                    rk = Registry.CurrentUser.CreateSubKey(pgAdmin3_ServersKey);
+                    rk = Registry.CurrentUser.CreateSubKey(PGADMIN3_REGISTRY_KEY_SERVER);
                     rk.SetValue("Count", 0);
                     rk.Flush();
                     // Set create pp key to true
@@ -574,9 +596,9 @@ namespace Portable_Postgres
                     rk.SetValue("Count", serverCount + 1);
                 }
                 // Check the local folder exists for the password file
-                if (!Directory.Exists(pgAdmin3_PasswordDir)) Directory.CreateDirectory(pgAdmin3_PasswordDir);
+                if (!Directory.Exists(PGADMIN3_PASSWORD_DIR)) Directory.CreateDirectory(PGADMIN3_PASSWORD_DIR);
                 // Write the stored password file
-                File.WriteAllText(pgAdmin3_PasswordDir + "\\pgpass.conf", "127.0.0.1:5432:*:" + dbUser.Text + ":" + dbPass.Text);
+                File.WriteAllText(PGADMIN3_PASSWORD_DIR + "\\pgpass.conf", "127.0.0.1:5432:*:" + dbUser.Text + ":" + dbPass.Text);
             }
             catch { }
             // Launch Portable Postgres 3
@@ -769,19 +791,19 @@ namespace Portable_Postgres
         // Event handlers for value changing
         private void pathSQL_TextChanged(object sender, EventArgs e)
         {
-            updateSettings(constSettingsClientPath, pathSQL.Text);
+            updateSettings(SETTINGS_CLIENT_PATH, pathSQL.Text);
         }
         private void dbUser_TextChanged(object sender, EventArgs e)
         {
-            updateSettings(constSettingsClientUser, dbUser.Text);
+            updateSettings(SETTINGS_CLIENT_USER, dbUser.Text);
         }
         private void dbPass_TextChanged(object sender, EventArgs e)
         {
-            updateSettings(constSettingsClientPass, dbPass.Text);
+            updateSettings(SETTINGS_CLIENT_PASS, dbPass.Text);
         }
         private void dbDatabase_TextChanged(object sender, EventArgs e)
         {
-            updateSettings(constSettingsClientDb, dbDatabase.Text);
+            updateSettings(SETTINGS_CLIENT_DB, dbDatabase.Text);
         }
         /// <summary>
         /// Invoked when the checkbox control for "Hide server window" is changed.
@@ -790,7 +812,7 @@ namespace Portable_Postgres
         /// <param name="e"></param>
         private void lsHide_CheckedChanged(object sender, EventArgs e)
         {
-            updateSettings(constSettingsHideServerWindow, lsHide.Checked ? "1" : "0");
+            updateSettings(SETTINGS_HIDE_SERVER_WINDOW, lsHide.Checked ? "1" : "0");
         }
         /// <summary>
         /// Invoked when the checkbox control for "Automatically launch" is changed.
@@ -799,7 +821,7 @@ namespace Portable_Postgres
         /// <param name="e"></param>
         private void lsAutoLaunch_CheckedChanged(object sender, EventArgs e)
         {
-            updateSettings(constSettingsAutomaticallyLaunch, lsAutoLaunch.Checked ? "1" : "0");
+            updateSettings(SETTINGS_AUTO_LAUNCH, lsAutoLaunch.Checked ? "1" : "0");
         }
         #endregion
 
@@ -920,6 +942,22 @@ namespace Portable_Postgres
                 buttDownload.Visible = true;
                 comboBox1.Enabled = true;
             });
+        }
+        #endregion
+
+        #region "Methods - Misc"
+        public static void launchURL(string url)
+        {
+            try
+            {
+                Process.Start(url);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Failed to launch external browser for the following URL:\r\n" + url + "\r\n\r\nError:" + ex.Message + "\r\n\r\nStack-trace:\r\n" + ex.StackTrace,
+                    "Error",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
         #endregion
     }

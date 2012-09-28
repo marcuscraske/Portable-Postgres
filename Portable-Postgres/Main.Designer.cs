@@ -52,7 +52,6 @@
             this.button4 = new System.Windows.Forms.Button();
             this.pathSQL = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
-            this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.versionText = new System.Windows.Forms.Label();
             this.label11 = new System.Windows.Forms.Label();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
@@ -65,17 +64,17 @@
             this.groupDownload = new System.Windows.Forms.Panel();
             this.installationProgress = new System.Windows.Forms.ProgressBar();
             this.label9 = new System.Windows.Forms.Label();
+            this.dbBrowse = new System.Windows.Forms.FolderBrowserDialog();
+            this.saveSettings = new System.Windows.Forms.Timer(this.components);
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.linkDebug = new System.Windows.Forms.LinkLabel();
             this.linkHelp = new System.Windows.Forms.LinkLabel();
             this.linkLabel1 = new System.Windows.Forms.LinkLabel();
             this.label2 = new System.Windows.Forms.Label();
-            this.dbBrowse = new System.Windows.Forms.FolderBrowserDialog();
-            this.saveSettings = new System.Windows.Forms.Timer(this.components);
-            this.splitContainer1.Panel1.SuspendLayout();
-            this.splitContainer1.Panel2.SuspendLayout();
-            this.splitContainer1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.groupLaunch.SuspendLayout();
             this.groupDownload.SuspendLayout();
+            this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // buttDownloadAbort
@@ -111,7 +110,7 @@
             this.label4.Size = new System.Drawing.Size(377, 13);
             this.label4.TabIndex = 4;
             this.label4.Text = "-- Select the first item for 32-bit Windows or the second item for 64-bit Windows" +
-    "";
+                "";
             // 
             // label3
             // 
@@ -126,8 +125,8 @@
             // 
             this.comboBox1.FormattingEnabled = true;
             this.comboBox1.Items.AddRange(new object[] {
-            "http://get.enterprisedb.com/postgresql/postgresql-9.1.3-1-windows-binaries.zip",
-            "http://get.enterprisedb.com/postgresql/postgresql-9.1.3-1-windows-x64-binaries.zi" +
+            "http://get.enterprisedb.com/postgresql/postgresql-9.2.1-1-windows-binaries.zip",
+            "http://get.enterprisedb.com/postgresql/postgresql-9.2.1-1-windows-x64-binaries.zi" +
                 "p",
             "(enter your own)"});
             this.comboBox1.Location = new System.Drawing.Point(51, 22);
@@ -331,44 +330,13 @@
             this.label1.TabIndex = 0;
             this.label1.Text = "Select the path containing your SQL files:";
             // 
-            // splitContainer1
-            // 
-            this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitContainer1.FixedPanel = System.Windows.Forms.FixedPanel.Panel2;
-            this.splitContainer1.IsSplitterFixed = true;
-            this.splitContainer1.Location = new System.Drawing.Point(0, 0);
-            this.splitContainer1.Name = "splitContainer1";
-            this.splitContainer1.Orientation = System.Windows.Forms.Orientation.Horizontal;
-            // 
-            // splitContainer1.Panel1
-            // 
-            this.splitContainer1.Panel1.BackgroundImage = global::Portable_Postgres.Properties.Resources.background;
-            this.splitContainer1.Panel1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.splitContainer1.Panel1.Controls.Add(this.versionText);
-            this.splitContainer1.Panel1.Controls.Add(this.label11);
-            this.splitContainer1.Panel1.Controls.Add(this.pictureBox1);
-            this.splitContainer1.Panel1.Controls.Add(this.groupLaunch);
-            this.splitContainer1.Panel1.Controls.Add(this.groupDownload);
-            // 
-            // splitContainer1.Panel2
-            // 
-            this.splitContainer1.Panel2.BackColor = System.Drawing.Color.Gray;
-            this.splitContainer1.Panel2.Controls.Add(this.linkHelp);
-            this.splitContainer1.Panel2.Controls.Add(this.linkLabel1);
-            this.splitContainer1.Panel2.Controls.Add(this.label2);
-            this.splitContainer1.Panel2.ForeColor = System.Drawing.Color.White;
-            this.splitContainer1.Size = new System.Drawing.Size(741, 219);
-            this.splitContainer1.SplitterDistance = 193;
-            this.splitContainer1.SplitterWidth = 1;
-            this.splitContainer1.TabIndex = 8;
-            // 
             // versionText
             // 
             this.versionText.AutoSize = true;
             this.versionText.BackColor = System.Drawing.Color.Transparent;
             this.versionText.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.versionText.ForeColor = System.Drawing.Color.White;
-            this.versionText.Location = new System.Drawing.Point(655, 119);
+            this.versionText.Location = new System.Drawing.Point(666, 121);
             this.versionText.Name = "versionText";
             this.versionText.Size = new System.Drawing.Size(37, 13);
             this.versionText.TabIndex = 11;
@@ -380,7 +348,7 @@
             this.label11.BackColor = System.Drawing.Color.Transparent;
             this.label11.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label11.ForeColor = System.Drawing.Color.White;
-            this.label11.Location = new System.Drawing.Point(626, 106);
+            this.label11.Location = new System.Drawing.Point(639, 105);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(90, 13);
             this.label11.TabIndex = 10;
@@ -390,7 +358,7 @@
             // 
             this.pictureBox1.BackColor = System.Drawing.Color.Transparent;
             this.pictureBox1.Image = global::Portable_Postgres.Properties.Resources.PostgreSQL_logo1;
-            this.pictureBox1.Location = new System.Drawing.Point(626, 8);
+            this.pictureBox1.Location = new System.Drawing.Point(635, 11);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(99, 90);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
@@ -421,10 +389,11 @@
             this.groupLaunch.Controls.Add(this.button5);
             this.groupLaunch.Controls.Add(this.dbDatabase);
             this.groupLaunch.ForeColor = System.Drawing.Color.White;
-            this.groupLaunch.Location = new System.Drawing.Point(2, 3);
+            this.groupLaunch.Location = new System.Drawing.Point(12, 12);
             this.groupLaunch.Name = "groupLaunch";
             this.groupLaunch.Size = new System.Drawing.Size(615, 183);
             this.groupLaunch.TabIndex = 5;
+            this.groupLaunch.Visible = false;
             // 
             // buttPgAdmin3
             // 
@@ -462,7 +431,7 @@
             this.label8.Size = new System.Drawing.Size(537, 13);
             this.label8.TabIndex = 11;
             this.label8.Text = "If the client disappears after launch, try wiping the database a few times by cli" +
-    "cking the \"Wipe Database\" button.";
+                "cking the \"Wipe Database\" button.";
             // 
             // button1
             // 
@@ -504,10 +473,11 @@
             this.groupDownload.Controls.Add(this.label4);
             this.groupDownload.Controls.Add(this.comboBox1);
             this.groupDownload.ForeColor = System.Drawing.Color.White;
-            this.groupDownload.Location = new System.Drawing.Point(2, 5);
+            this.groupDownload.Location = new System.Drawing.Point(12, 12);
             this.groupDownload.Name = "groupDownload";
             this.groupDownload.Size = new System.Drawing.Size(606, 129);
             this.groupDownload.TabIndex = 4;
+            this.groupDownload.Visible = false;
             // 
             // installationProgress
             // 
@@ -529,50 +499,6 @@
             this.label9.TabIndex = 7;
             this.label9.Text = "Download Postgres";
             // 
-            // linkHelp
-            // 
-            this.linkHelp.ActiveLinkColor = System.Drawing.Color.White;
-            this.linkHelp.AutoSize = true;
-            this.linkHelp.Dock = System.Windows.Forms.DockStyle.Left;
-            this.linkHelp.LinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.linkHelp.Location = new System.Drawing.Point(110, 0);
-            this.linkHelp.Name = "linkHelp";
-            this.linkHelp.Padding = new System.Windows.Forms.Padding(2);
-            this.linkHelp.Size = new System.Drawing.Size(59, 17);
-            this.linkHelp.TabIndex = 10;
-            this.linkHelp.TabStop = true;
-            this.linkHelp.Text = "View Help";
-            this.linkHelp.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkHelp_LinkClicked);
-            // 
-            // linkLabel1
-            // 
-            this.linkLabel1.ActiveLinkColor = System.Drawing.Color.White;
-            this.linkLabel1.AutoSize = true;
-            this.linkLabel1.Dock = System.Windows.Forms.DockStyle.Left;
-            this.linkLabel1.LinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.linkLabel1.Location = new System.Drawing.Point(0, 0);
-            this.linkLabel1.Name = "linkLabel1";
-            this.linkLabel1.Padding = new System.Windows.Forms.Padding(2);
-            this.linkLabel1.Size = new System.Drawing.Size(110, 17);
-            this.linkLabel1.TabIndex = 9;
-            this.linkLabel1.TabStop = true;
-            this.linkLabel1.Text = "Contribute via Github";
-            this.linkLabel1.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel1_LinkClicked);
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Dock = System.Windows.Forms.DockStyle.Right;
-            this.label2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.label2.Location = new System.Drawing.Point(475, 0);
-            this.label2.Name = "label2";
-            this.label2.Padding = new System.Windows.Forms.Padding(2);
-            this.label2.Size = new System.Drawing.Size(266, 30);
-            this.label2.TabIndex = 8;
-            this.label2.Text = "Author: limpygnome (limpygnome@gmail.com)\r\nCreative Commons Attribution-ShareAlik" +
-    "e 3.0 unported";
-            this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
             // dbBrowse
             // 
             this.dbBrowse.RootFolder = System.Environment.SpecialFolder.MyComputer;
@@ -582,12 +508,91 @@
             this.saveSettings.Interval = 3000;
             this.saveSettings.Tick += new System.EventHandler(this.saveSettings_Tick);
             // 
+            // panel1
+            // 
+            this.panel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.panel1.Controls.Add(this.linkDebug);
+            this.panel1.Controls.Add(this.linkHelp);
+            this.panel1.Controls.Add(this.linkLabel1);
+            this.panel1.Controls.Add(this.label2);
+            this.panel1.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.panel1.Location = new System.Drawing.Point(0, 215);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(754, 32);
+            this.panel1.TabIndex = 9;
+            // 
+            // linkDebug
+            // 
+            this.linkDebug.ActiveLinkColor = System.Drawing.Color.White;
+            this.linkDebug.AutoSize = true;
+            this.linkDebug.Dock = System.Windows.Forms.DockStyle.Left;
+            this.linkDebug.LinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.linkDebug.Location = new System.Drawing.Point(169, 0);
+            this.linkDebug.Name = "linkDebug";
+            this.linkDebug.Padding = new System.Windows.Forms.Padding(2);
+            this.linkDebug.Size = new System.Drawing.Size(114, 17);
+            this.linkDebug.TabIndex = 14;
+            this.linkDebug.TabStop = true;
+            this.linkDebug.Text = "Show Debug Console";
+            this.linkDebug.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkDebug_LinkClicked);
+            // 
+            // linkHelp
+            // 
+            this.linkHelp.ActiveLinkColor = System.Drawing.Color.White;
+            this.linkHelp.AutoSize = true;
+            this.linkHelp.Dock = System.Windows.Forms.DockStyle.Left;
+            this.linkHelp.LinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.linkHelp.Location = new System.Drawing.Point(110, 0);
+            this.linkHelp.Name = "linkHelp";
+            this.linkHelp.Padding = new System.Windows.Forms.Padding(2);
+            this.linkHelp.Size = new System.Drawing.Size(59, 17);
+            this.linkHelp.TabIndex = 13;
+            this.linkHelp.TabStop = true;
+            this.linkHelp.Text = "View Help";
+            this.linkHelp.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkHelp_LinkClicked);
+            // 
+            // linkLabel1
+            // 
+            this.linkLabel1.ActiveLinkColor = System.Drawing.Color.White;
+            this.linkLabel1.AutoSize = true;
+            this.linkLabel1.Dock = System.Windows.Forms.DockStyle.Left;
+            this.linkLabel1.LinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.linkLabel1.Location = new System.Drawing.Point(0, 0);
+            this.linkLabel1.Name = "linkLabel1";
+            this.linkLabel1.Padding = new System.Windows.Forms.Padding(2);
+            this.linkLabel1.Size = new System.Drawing.Size(110, 17);
+            this.linkLabel1.TabIndex = 12;
+            this.linkLabel1.TabStop = true;
+            this.linkLabel1.Text = "Contribute via Github";
+            this.linkLabel1.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkContribute_LinkClicked);
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Dock = System.Windows.Forms.DockStyle.Right;
+            this.label2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.label2.Location = new System.Drawing.Point(488, 0);
+            this.label2.Name = "label2";
+            this.label2.Padding = new System.Windows.Forms.Padding(2);
+            this.label2.Size = new System.Drawing.Size(266, 30);
+            this.label2.TabIndex = 11;
+            this.label2.Text = "Author: limpygnome (limpygnome@gmail.com)\r\nCreative Commons Attribution-ShareAlik" +
+                "e 3.0 unported";
+            this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(741, 219);
-            this.Controls.Add(this.splitContainer1);
+            this.BackgroundImage = global::Portable_Postgres.Properties.Resources.background;
+            this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.ClientSize = new System.Drawing.Size(754, 247);
+            this.Controls.Add(this.groupDownload);
+            this.Controls.Add(this.groupLaunch);
+            this.Controls.Add(this.versionText);
+            this.Controls.Add(this.panel1);
+            this.Controls.Add(this.label11);
+            this.Controls.Add(this.pictureBox1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.KeyPreview = true;
@@ -598,17 +603,15 @@
             this.Text = "Portable Postgres - Ubermeat.co.uk FOSS";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
             this.Shown += new System.EventHandler(this.Form1_Shown);
-            this.splitContainer1.Panel1.ResumeLayout(false);
-            this.splitContainer1.Panel1.PerformLayout();
-            this.splitContainer1.Panel2.ResumeLayout(false);
-            this.splitContainer1.Panel2.PerformLayout();
-            this.splitContainer1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.groupLaunch.ResumeLayout(false);
             this.groupLaunch.PerformLayout();
             this.groupDownload.ResumeLayout(false);
             this.groupDownload.PerformLayout();
+            this.panel1.ResumeLayout(false);
+            this.panel1.PerformLayout();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -636,9 +639,6 @@
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.TextBox dbPass;
         private System.Windows.Forms.TextBox dbUser;
-        private System.Windows.Forms.SplitContainer splitContainer1;
-        private System.Windows.Forms.LinkLabel linkLabel1;
-        private System.Windows.Forms.Label label2;
         private System.Windows.Forms.FolderBrowserDialog dbBrowse;
         private System.Windows.Forms.Timer saveSettings;
         private System.Windows.Forms.Button button1;
@@ -652,8 +652,12 @@
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.Label versionText;
         private System.Windows.Forms.CheckBox lsAutoLaunch;
-        private System.Windows.Forms.LinkLabel linkHelp;
         private System.Windows.Forms.Button buttPgAdmin3;
+        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.LinkLabel linkHelp;
+        private System.Windows.Forms.LinkLabel linkLabel1;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.LinkLabel linkDebug;
     }
 }
 

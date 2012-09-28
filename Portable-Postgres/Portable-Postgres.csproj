@@ -65,17 +65,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DebugConsole.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DebugConsole.Designer.cs">
+      <DependentUpon>DebugConsole.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Debugger.cs" />
     <Compile Include="DetectionWindow.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="DetectionWindow.Designer.cs">
       <DependentUpon>DetectionWindow.cs</DependentUpon>
-    </Compile>
-    <Compile Include="HelpWindow.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="HelpWindow.Designer.cs">
-      <DependentUpon>HelpWindow.cs</DependentUpon>
     </Compile>
     <Compile Include="Main.cs">
       <SubType>Form</SubType>
@@ -91,11 +92,11 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="DebugConsole.resx">
+      <DependentUpon>DebugConsole.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="DetectionWindow.resx">
       <DependentUpon>DetectionWindow.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="HelpWindow.resx">
-      <DependentUpon>HelpWindow.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Main.resx">
       <DependentUpon>Main.cs</DependentUpon>
