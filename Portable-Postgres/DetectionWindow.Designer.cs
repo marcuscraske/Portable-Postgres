@@ -69,7 +69,7 @@
             this.txtLabelNew.Size = new System.Drawing.Size(392, 32);
             this.txtLabelNew.TabIndex = 11;
             this.txtLabelNew.Text = "Possible conflicts have been found, which may not allow Portable\r\nPostgres to ope" +
-    "rate or install correctly:";
+                "rate or install correctly:";
             // 
             // panel1
             // 
@@ -176,8 +176,8 @@
             this.label2.Size = new System.Drawing.Size(307, 64);
             this.label2.TabIndex = 19;
             this.label2.Text = "A service with the word \"Postgres\" has been found;\r\nthis may be a possible Postgr" +
-    "es database running\r\nin the background, which may conflict with\r\nPortable Postgr" +
-    "es.";
+                "es database running\r\nin the background, which may conflict with\r\nPortable Postgr" +
+                "es.";
             // 
             // label3
             // 
@@ -209,8 +209,8 @@
             this.label4.Size = new System.Drawing.Size(414, 48);
             this.label4.TabIndex = 19;
             this.label4.Text = "The default port used by Postgres is already in-use!\r\nNo resolution can be provid" +
-    "ed by Portable Postgres; you will need to\r\nfind the conflicting program and stop" +
-    "/uninstall it!";
+                "ed by Portable Postgres; you will need to\r\nfind the conflicting program and stop" +
+                "/uninstall it!";
             // 
             // label5
             // 
@@ -253,6 +253,7 @@
             this.Controls.Add(this.panel1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.MaximizeBox = false;
             this.Name = "DetectionWindow";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Runtime Issues Detected - Portable Postgres - Ubermeat.co.uk FOSS";

@@ -46,15 +46,21 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationIcon>icon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Controls, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL" />
     <Reference Include="Ionic.Zip.Reduced, Version=1.9.1.8, Culture=neutral, PublicKeyToken=edbe51ad942a3f5c, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>.\Ionic.Zip.Reduced.dll</HintPath>
+    </Reference>
+    <Reference Include="Mono.Security">
+      <HintPath>.\Mono.Security.dll</HintPath>
+    </Reference>
+    <Reference Include="Npgsql">
+      <HintPath>.\Npgsql.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -92,6 +98,12 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="InstallSettings.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="InstallSettings.Designer.cs">
+      <DependentUpon>InstallSettings.cs</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="DebugConsole.resx">
       <DependentUpon>DebugConsole.cs</DependentUpon>
     </EmbeddedResource>
@@ -114,6 +126,9 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <EmbeddedResource Include="InstallSettings.resx">
+      <DependentUpon>InstallSettings.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -127,6 +142,9 @@
   <ItemGroup>
     <Content Include="icon.ico" />
     <Content Include="Ionic.Zip.Reduced.dll" />
+    <Content Include="Updater.exe">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Updater.xml">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

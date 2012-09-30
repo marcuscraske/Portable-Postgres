@@ -1,3 +1,10 @@
+v1.6.0:
+- Various code clean-ups, improvements and optimisations.
+- Added install setup to allow custom-creation of a database and user-role.
+- Added debug console with stack tracing and error-logging.
+- Updated Uber Updater (v1.2.0).
+- Fixed major bug where the base-path would derive from the working directory; this probably caused issues with i.e. older operating systems.
+- Removed Help Window; instead a help page is opened in the user's default browser, which is located on the ubermeat website.
 v1.5.2:
 - Now using a shared updater from the repo Updater.
 v1.5.1:

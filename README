@@ -2,22 +2,27 @@ Portable Postgres
 ============================================================================
 License:		Creative Commons Attribution-ShareAlike 3.0 unported
 Author(s):		limpygnome			limpygnome@gmail.com
-Version:		1.5.2
+Version:		1.6.0
 
 Allows you to create a portable Postgres database server with many more
 features.
 
 Features:
-- Create a portable Postgres database server.
-- Simply click download and have the application:
--- Download the Postgres server files.
--- Initialize the database "postgres".
--- Create the user-role "User" with no password.
-- Launch the psql client with the ability to easily change the
-  working-directory, as well as the user, pass and database used;
-  these settings are also saved automatically for next-time.
-- Similar to the psql client, you can launch the pgAdmin III client;
-  the settings to connect to Portable Postgres are automatically
-  created and updated too!
-- Includes runtime issues detection, ensuring e.g. no other Postgres
-  databases are running simultaneously to avoid startup issues.
+-	Create a portable Postgres database server.
+-	Simply click download and have the application:
+	--	Download the Postgres server files.
+	--	Initialize the database "postgres".
+	--	Create the user-role "root" without a password.
+	--	Create an additional custom database or/and role specified in the setup wizard.
+-	Launch the psql client with the ability to easily change the
+	working-directory, as well as the user, pass and database used;
+	these settings are also saved automatically for next-time.
+-	Similar to the psql client, you can launch the pgAdmin III client;
+	the settings to connect to Portable Postgres are automatically
+	created and updated too!
+-	Includes runtime issues detection, ensuring e.g. no other Postgres
+	databases are running simultaneously to avoid startup issues.
+-	Includes debugging console.
+
+Credits:
+-	Npgsql (v2.0.12.0 / net2.0) - http://npgsql.projects.postgresql.org/.

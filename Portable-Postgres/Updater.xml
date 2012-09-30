@@ -9,7 +9,7 @@
   <!-- The local file executed afterwards -->
   <executeFile>Portable-Postgres.exe</executeFile>
   <!-- The URL used for retrieving the data of the current version of the application (zip file) -->
-  <urlBinary>https://github.com/ubermeat/Portable-Postgres/raw/master/Binaries/Download.zip</urlBinary>
+  <urlBinary>https://github.com/ubermeat/Portable-Postgres/raw/master/DOWNLOAD_URL</urlBinary>
   <!-- The URL used for retrieving the current version of the application -->
   <urlVersionCheck>https://raw.github.com/ubermeat/Portable-Postgres/master/VERSION</urlVersionCheck>
   <!-- The URL used for displaying the change-log -->
@@ -20,15 +20,13 @@
   </processFileNames>
   <!-- Excluded files - usually only the files used by the updater -->
   <excludedFiles>
-    <item>Ionic.Zip.Reduced.dll</item>
     <item>Updater.exe</item>
-    <item>Controls.dll</item>
   </excludedFiles>
   <!-- Used to check of the application needs updating -->
   <version>
     <major>1</major>
-    <minor>5</minor>
-    <build>2</build>
+    <minor>6</minor>
+    <build>0</build>
   </version>
   <contact>
     <website>http://www.ubermeat.co.uk</website>
