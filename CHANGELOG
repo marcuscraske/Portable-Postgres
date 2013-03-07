@@ -1,3 +1,6 @@
+v1.6.1:
+- Minor bug-fixes.
+- Reverted default download to version 8.4.
 v1.6.0:
 - Various code clean-ups, improvements and optimisations.
 - Added install setup to allow custom-creation of a database and user-role.
