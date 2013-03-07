@@ -126,6 +126,7 @@
             // 
             this.comboBox1.FormattingEnabled = true;
             this.comboBox1.Items.AddRange(new object[] {
+            "http://get.enterprisedb.com/postgresql/postgresql-8.4.16-1-windows-binaries.zip",
             "http://get.enterprisedb.com/postgresql/postgresql-9.2.1-1-windows-binaries.zip",
             "http://get.enterprisedb.com/postgresql/postgresql-9.2.1-1-windows-x64-binaries.zi" +
                 "p",
@@ -602,11 +603,11 @@
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.ClientSize = new System.Drawing.Size(754, 247);
             this.Controls.Add(this.groupLaunch);
+            this.Controls.Add(this.groupDownload);
             this.Controls.Add(this.versionText);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.label11);
             this.Controls.Add(this.pictureBox1);
-            this.Controls.Add(this.groupDownload);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.KeyPreview = true;

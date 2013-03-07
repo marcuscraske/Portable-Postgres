@@ -37,7 +37,7 @@ namespace Portable_Postgres
             // Version constants used to check if the current build is the latest etc
             private const int VERSION_MAJOR = 1;
             private const int VERSION_MINOR = 6;
-            private const int VERSION_BUILD = 0;
+            private const int VERSION_BUILD = 1;
             #endregion
             #region "Settings keynames"
             private const string SETTINGS_CLIENT_PATH = "client_path";
@@ -101,13 +101,15 @@ namespace Portable_Postgres
             baseDirectory = AppDomain.CurrentDomain.BaseDirectory;
             if(baseDirectory.EndsWith("/") ||  baseDirectory.EndsWith("\\"))
                 baseDirectory = baseDirectory.Substring(0, baseDirectory.Length - 1);
+            // -- No longer enabled; switching to an old 32-bit version of Postgres (more stable).
             // Select a download URL based on the OS architecture; we can detect this by
             // checking the length of a pointer; credit goes to:
             // http://www.codeproject.com/Tips/107866/32-Bit-or-64-bit-OS
-            if (IntPtr.Size == 4)
-                comboBox1.SelectedIndex = 0;
-            else
-                comboBox1.SelectedIndex = 1;
+            //if (IntPtr.Size == 4)
+            //    comboBox1.SelectedIndex = 0;
+            //else
+            //    comboBox1.SelectedIndex = 1;
+            comboBox1.SelectedIndex = 0;
             // Check if settings file exists
             if (File.Exists(baseDirectory + "\\Settings.xml"))
             {
@@ -296,6 +298,10 @@ namespace Portable_Postgres
             {
                 error("Failed to download Postgres!", e.Error);
                 debug.write("Failed to download Postgres!");
+                Invoke((MethodInvoker)delegate()
+                {
+                    controlsEnableDownload();
+                });
             }
             else
             {
